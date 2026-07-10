@@ -2,138 +2,103 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Persona Hub // Full Integration</title>
+    <title>Persona Hub // Tactical Command Matrix</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900;1,900&family=Space+Grotesk:wght@700&display=swap');
-        :root { --bg-dark: #090b10; --neon-cyan: #00f2fe; --neon-magenta: #ff0055; --neon-yellow: #fffb00; --pure-white: #ffffff; }
-        body { background: var(--bg-dark); color: var(--pure-white); font-family: 'Space Grotesk', sans-serif; padding: 2rem; }
+        :root { --bg-dark: #090b10; --neon-cyan: #00f2fe; --neon-magenta: #ff0055; --neon-yellow: #fffb00; --pure-white: #ffffff; --deep-dark: #000000; }
+        body { background-color: var(--bg-dark); color: var(--pure-white); font-family: 'Space Grotesk', sans-serif; padding: 2rem; overflow-x: hidden; }
         
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1200px; margin: 0 auto; }
-        .menu-btn { background: #111; border: 3px solid var(--pure-white); color: #fff; padding: 1.5rem; cursor: pointer; text-transform: uppercase; font-weight: 900; }
-        .menu-btn:hover { background: var(--neon-yellow); color: #000; }
-        
-        .view-section { display: none; max-width: 800px; margin: 0 auto; background: #000; padding: 2rem; border: 4px solid var(--pure-white); }
-        .back-btn { background: var(--neon-cyan); color: #000; padding: 0.5rem 1rem; cursor: pointer; display: inline-block; margin-bottom: 1rem; font-weight: 900; }
-        
-        /* Calendar */
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 1rem; }
-        .cal-day { background: #222; padding: 10px; text-align: center; border: 1px solid #444; }
-        .has-event { background: var(--neon-magenta); }
+        /* Terminal Aesthetics */
+        header { border-bottom: 8px solid var(--pure-white); padding-bottom: 1rem; margin-bottom: 2rem; transform: skewX(-10deg); display: inline-block; }
+        header h1 { font-family: 'Montserrat', sans-serif; font-style: italic; font-size: 2.5rem; text-transform: uppercase; color: var(--pure-white); text-shadow: 3px 3px 0px var(--neon-cyan); }
 
-        /* Media Panel */
-        .config-panel { margin-top: 3rem; border: 2px dashed var(--neon-yellow); padding: 2rem; }
-        input, select { width: 100%; padding: 0.8rem; margin: 0.5rem 0; background: #111; color: #fff; border: 1px solid #555; }
-        .action-btn { background: var(--neon-cyan); padding: 1rem; width: 100%; font-weight: 900; cursor: pointer; border: none; }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; max-width: 1000px; margin: 0 auto; }
+        .menu-btn { font-family: 'Montserrat', sans-serif; font-weight: 900; font-style: italic; background: var(--deep-dark); color: var(--pure-white); padding: 1.5rem; border: 3px solid var(--pure-white); cursor: pointer; text-transform: uppercase; margin-bottom: 1rem; box-shadow: -8px 8px 0px var(--neon-magenta); transition: 0.2s; width: 100%; }
+        .menu-btn:hover { background: var(--neon-yellow); color: var(--deep-dark); transform: translate(5px, -5px); }
+
+        .view-section { display: none; background: var(--deep-dark); border: 4px solid var(--pure-white); padding: 2rem; box-shadow: -12px 12px 0px var(--neon-magenta); max-width: 800px; margin: 0 auto; }
+        .back-btn { background: var(--neon-cyan); color: #000; font-weight: 900; padding: 0.5rem 1rem; cursor: pointer; display: inline-block; margin-bottom: 1rem; text-transform: uppercase; }
+        
+        .video-container { border: 4px solid var(--pure-white); background: #000; height: 300px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        
+        .config-matrix-panel { margin-top: 4rem; border: 2px dashed var(--neon-yellow); padding: 2rem; background: #000; max-width: 800px; margin-left: auto; margin-right: auto; }
+        input, select { background: #111; color: #fff; border: 2px solid #333; padding: 0.8rem; width: 100%; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
 
-    <header><h1>System://Persona.Core</h1></header>
+    <header><h1>System://Persona.Command</h1></header>
 
     <div class="dashboard-grid" id="mainDashboardView">
         <div class="menu-container">
-            <button class="menu-btn" onclick="switchView('vaultCard')">01 // VAULT</button>
-            <button class="menu-btn" onclick="switchView('chronoCard')">02 // CHRONO</button>
-            <button class="menu-btn" onclick="switchView('animeCard')">03 // ANIME</button>
+            <button class="menu-btn" onclick="switchView('main', 'main')">💥 MAIN MENU</button>
+            <button class="menu-btn" onclick="switchView('vaultCard', 'vault')">💰 VAULT MATRIX</button>
+            <button class="menu-btn" onclick="switchView('chronoCard', 'chrono')">📅 CHRONO TRACKER</button>
         </div>
-        <div id="mainMenuVideoArea"></div>
+        <div id="mediaDisplayArea" class="video-container">
+            [ TERMINAL STANDBY ]
+        </div>
     </div>
 
+    <!-- UI Panels -->
     <div class="view-section" id="vaultCard">
-        <div class="back-btn" onclick="showMenu()">BACK</div>
+        <div class="back-btn" onclick="showMenu()">↩ ESCAPE</div>
         <h2>VAULT MATRIX</h2>
-        <div id="totalSavings">Balance: ₹0</div>
-        <input type="number" id="savingsAmount" placeholder="Amount">
-        <button class="action-btn" onclick="modifySavings('add')">DEPOSIT</button>
     </div>
 
     <div class="view-section" id="chronoCard">
-        <div class="back-btn" onclick="showMenu()">BACK</div>
+        <div class="back-btn" onclick="showMenu()">↩ ESCAPE</div>
         <h2>CHRONO TRACKER</h2>
-        <input type="text" id="eventTitle" placeholder="Event Name">
-        <input type="date" id="eventDate">
-        <button class="action-btn" onclick="addCalendarEvent()">SAVE EVENT</button>
-        <div class="calendar-grid" id="calendarGrid"></div>
     </div>
 
-    <div class="view-section" id="animeCard">
-        <div class="back-btn" onclick="showMenu()">BACK</div>
-        <h2>ANIME LOG</h2>
-        <div id="animeList"></div>
-    </div>
-
-    <div class="config-panel">
-        <h3>FILE MAPPING MATRIX</h3>
-        <select id="targetCardSlot">
-            <option value="vaultCard">Vault Card</option>
-            <option value="chronoCard">Chrono Card</option>
-            <option value="animeCard">Anime Card</option>
-        </select>
-        <select id="assetTypeSlot">
-            <option value="video">Video</option>
-            <option value="sound">Sound</option>
-        </select>
-        <input type="file" id="localFileInjector" accept="audio/*,video/*" onchange="processLocalFile()">
+    <!-- Mapping Panel -->
+    <div class="config-matrix-panel">
+        <h3 style="color:var(--neon-yellow);">🛠️ ASSET MAPPING MATRIX</h3>
+        <select id="targetSlot"><option value="main">Main Menu</option><option value="vault">Vault Matrix</option><option value="chrono">Chrono Tracker</option></select>
+        <select id="assetSlot"><option value="video">Video</option><option value="sound">Sound</option></select>
+        <input type="file" id="fileInput" accept="audio/*,video/*" onchange="mapFile()">
     </div>
 
     <script>
-        let mediaTable = JSON.parse(localStorage.getItem('mediaTable')) || {};
-        let state = JSON.parse(localStorage.getItem('state')) || { savings: 0, events: {}, anime: [] };
+        let registry = JSON.parse(localStorage.getItem('registry')) || {};
 
-        function processLocalFile() {
-            const file = document.getElementById('localFileInjector').files[0];
+        function mapFile() {
+            const file = document.getElementById('fileInput').files[0];
             const reader = new FileReader();
             reader.onload = (e) => {
-                mediaTable[document.getElementById('targetCardSlot').value + "_" + document.getElementById('assetTypeSlot').value] = e.target.result;
-                localStorage.setItem('mediaTable', JSON.stringify(mediaTable));
-                alert("Mounted!");
+                registry[document.getElementById('targetSlot').value + "_" + document.getElementById('assetSlot').value] = e.target.result;
+                localStorage.setItem('registry', JSON.stringify(registry));
+                alert("Asset Mounted to Registry.");
             };
             reader.readAsDataURL(file);
         }
 
-        function triggerMedia(cardId) {
-            const sound = mediaTable[cardId + "_sound"];
-            if(sound) new Audio(sound).play();
-            const video = mediaTable[cardId + "_video"];
-            const area = document.getElementById('mainMenuVideoArea');
-            if(video) area.innerHTML = `<video src="${video}" autoplay loop muted style="width:100%"></video>`;
-        }
-
-        function switchView(id) {
-            document.getElementById('mainDashboardView').style.display = 'none';
-            document.querySelectorAll('.view-section').forEach(s => s.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-            triggerMedia(id);
+        function switchView(id, registryKey) {
+            // Hide Dashboard, Show Panel
+            if(id !== 'main') {
+                document.getElementById('mainDashboardView').style.display = 'none';
+                document.getElementById(id).style.display = 'block';
+            }
+            
+            // Play Mapped Media
+            const videoData = registry[registryKey + "_video"];
+            const soundData = registry[registryKey + "_sound"];
+            
+            if(videoData) {
+                document.getElementById('mediaDisplayArea').innerHTML = `<video src="${videoData}" autoplay loop muted style="width:100%"></video>`;
+            }
+            if(soundData) {
+                new Audio(soundData).play();
+            }
         }
 
         function showMenu() {
             document.querySelectorAll('.view-section').forEach(s => s.style.display = 'none');
             document.getElementById('mainDashboardView').style.display = 'grid';
+            // Reset Main Menu Media
+            const mainVid = registry["main_video"];
+            if(mainVid) document.getElementById('mediaDisplayArea').innerHTML = `<video src="${mainVid}" autoplay loop muted style="width:100%"></video>`;
         }
-
-        function renderCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            grid.innerHTML = '';
-            for(let i=1; i<=28; i++) {
-                grid.innerHTML += `<div class="cal-day">${i}</div>`;
-            }
-        }
-
-        function addCalendarEvent() {
-            state.events[document.getElementById('eventDate').value] = document.getElementById('eventTitle').value;
-            localStorage.setItem('state', JSON.stringify(state));
-            renderCalendar();
-        }
-
-        function modifySavings(type) {
-            state.savings += parseInt(document.getElementById('savingsAmount').value);
-            localStorage.setItem('state', JSON.stringify(state));
-            document.getElementById('totalSavings').innerText = "Balance: ₹" + state.savings;
-            triggerMedia('vaultCard');
-        }
-
-        renderCalendar();
     </script>
 </body>
 </html>
