@@ -3,266 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Persona Hub // Main Menu</title>
+    <title>Persona Hub // Workspace</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,900;1,900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+
         :root {
-            --bg-dark: #070a13;
-            --panel-bg: #0f1626;
+            --bg-dark: #060911;
+            --panel-bg: #0d1322;
             --neon-blue: #00f2fe;
-            --neon-magenta: #ff007f;
+            --neon-magenta: #ff0055;
             --neon-green: #39ff14;
-            --text-primary: #e2e8f0;
-            --text-muted: #475569;
-            --border-glow: #1e293b;
+            --text-main: #ffffff;
+            --text-muted: #64748b;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Impact', 'Segoe UI', system-ui, sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-primary); padding: 2rem; overflow-x: hidden; }
+        /* Smooth crisp rendering rules */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body { 
+            background-color: var(--bg-dark); 
+            color: var(--text-main); 
+            padding: 2rem; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden; 
+        }
         
         header { 
-            margin-bottom: 2rem; 
-            border-bottom: 3px solid var(--neon-magenta); 
+            margin-bottom: 3rem; 
+            border-bottom: 4px solid var(--text-main); 
             padding-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            transform: skewX(-10deg);
+            position: relative;
         }
-        header h1 { color: #ffffff; font-size: 2.5rem; text-shadow: 3px 3px 0px var(--neon-magenta); }
-        header p { color: var(--neon-blue); font-size: 0.9rem; font-weight: bold; font-family: sans-serif; }
+        header h1 { 
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            font-size: 2.5rem; 
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            color: var(--text-main);
+            background: linear-gradient(135deg, #fff 60%, var(--neon-magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        header p { 
+            color: var(--neon-blue); 
+            font-size: 0.85rem; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0.25rem;
+        }
         
-        /* MENU INTERFACE SCREEN */
+        /* MENU SELECTION SYSTEM */
         .menu-container {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1rem;
-            max-width: 600px;
-            margin: 2rem auto;
-            transition: all 0.5s ease;
+            gap: 1.25rem;
+            max-width: 550px;
+            margin: 3rem auto;
         }
         
         .menu-btn {
-            background: #111;
-            color: #fff;
-            padding: 1.5rem;
-            font-size: 1.8rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            background: #ffffff;
+            color: #000000;
+            padding: 1.25rem 2rem;
+            font-size: 1.75rem;
             text-transform: uppercase;
-            border: 3px solid #fff;
             cursor: pointer;
             text-align: left;
             position: relative;
-            transform: skewX(-15deg);
-            box-shadow: -5px 5px 0px var(--neon-magenta);
-            transition: all 0.2s ease;
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+            transition: all 0.15s ease-out;
+            border: none;
+        }
+        .menu-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: var(--neon-magenta);
+            z-index: -1;
+            transition: all 0.25s ease;
         }
         .menu-btn:hover {
+            color: #ffffff;
+            transform: scale(1.04) translateX(10px);
             background: var(--neon-magenta);
-            color: #000;
-            transform: skewX(-15deg) scale(1.03);
-            box-shadow: -8px 8px 0px var(--neon-blue);
+            box-shadow: -10px 10px 0px var(--neon-blue);
         }
         .menu-btn span {
-            position: absolute;
-            right: 15px;
-            color: var(--neon-blue);
+            float: right;
+            margin-right: 5%;
+            color: var(--bg-dark);
         }
-        .menu-btn:hover span { color: #000; }
+        .menu-btn:hover span { color: #fff; }
 
-        /* VIEW APP CARDS */
+        /* INTERACTIVE VIEWS */
         .view-section {
             display: none;
-            max-width: 700px;
+            max-width: 650px;
             margin: 0 auto;
             background-color: var(--panel-bg); 
-            border: 3px solid #fff; 
-            border-radius: 0px; 
+            border: 3px solid #ffffff; 
             padding: 2rem; 
-            box-shadow: -10px 10px 0px var(--bg-dark), -10px 10px 0px 3px #fff;
-            transform: skewX(-2deg);
-            animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            clip-path: polygon(0 0, 100% 0, 100% 96%, 4% 100%, 0% 100%);
+            animation: sharpSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         
-        @keyframes slideIn {
-            0% { transform: skewX(10deg) translateX(100vw); opacity: 0; }
-            100% { transform: skewX(-2deg) translateX(0); opacity: 1; }
+        @keyframes sharpSlide {
+            0% { transform: translateX(50px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
         }
 
         .back-btn {
-            background: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            background: var(--neon-blue);
             color: #000;
-            padding: 0.5rem 1rem;
-            margin-bottom: 1.5rem;
+            padding: 0.5rem 1.2rem;
+            margin-bottom: 2rem;
             display: inline-block;
             cursor: pointer;
-            font-weight: bold;
-            transform: skewX(-10deg);
-            border: 2px solid var(--neon-magenta);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
         }
-        .back-btn:hover { background: var(--neon-blue); }
+        .back-btn:hover { background: #fff; }
 
         h2 { 
-            font-size: 1.8rem; 
-            margin-bottom: 1.25rem; 
-            color: var(--neon-blue); 
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            font-size: 1.6rem; 
+            margin-bottom: 1.5rem; 
+            color: #ffffff; 
             text-transform: uppercase;
-            border-bottom: 2px dashed #334155;
+            border-bottom: 3px solid var(--neon-blue);
             padding-bottom: 0.5rem;
         }
         
         input { 
-            font-family: sans-serif;
-            background: #060912; 
-            border: 2px solid var(--border-glow); 
-            color: white; 
-            padding: 0.75rem; 
-            margin-bottom: 0.75rem; 
+            background: #05080f; 
+            border: 2px solid #1e293b; 
+            color: #ffffff; 
+            padding: 0.8rem; 
+            margin-bottom: 0.8rem; 
             width: 100%; 
             outline: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 4px;
         }
         input:focus { border-color: var(--neon-blue); }
         
         .btn-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
         }
 
         .action-btn { 
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
             background-color: var(--neon-blue); 
-            color: #020617; 
-            font-weight: bold; 
+            color: #000; 
             cursor: pointer; 
-            border: 2px solid #fff; 
-            padding: 0.75rem;
+            border: none;
+            padding: 0.85rem;
             text-transform: uppercase;
-            font-size: 1rem;
-            transition: all 0.2s;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            clip-path: polygon(0 0, 100% 0, 92% 100%, 0% 100%);
         }
-        .action-btn:hover { background: var(--neon-magenta); color: #fff; }
+        .action-btn:hover { background: var(--neon-green); }
         
         .list-item { 
-            font-family: sans-serif;
             display: flex; 
             justify-content: space-between; 
-            background: #060912; 
-            padding: 0.85rem; 
+            align-items: center;
+            background: #05080f; 
+            padding: 0.9rem 1.2rem; 
             margin-bottom: 0.6rem; 
-            border-left: 5px solid var(--neon-magenta); 
+            border-left: 4px solid var(--neon-magenta); 
+            font-weight: 600;
+            font-size: 0.95rem;
         }
         
         .history-item {
-            font-family: sans-serif;
-            background: #060912;
-            padding: 0.5rem 0.75rem;
+            background: #05080f;
+            padding: 0.6rem 1rem;
             margin-bottom: 0.4rem;
             font-size: 0.9rem;
+            font-weight: 700;
         }
         
-        .progress-container { background: #060912; height: 20px; width: 100%; overflow: hidden; margin: 1rem 0; border: 1px solid #fff; }
-        .progress-bar { background: var(--neon-green); height: 100%; width: 0%; transition: width 0.4s ease; }
+        .progress-container { background: #05080f; height: 16px; width: 100%; margin: 1.5rem 0; border: 2px solid #fff; }
+        .progress-bar { background: var(--neon-green); height: 100%; width: 0%; transition: width 0.3s ease; }
         
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; font-size: 0.9rem; font-family: sans-serif; }
-        .cal-day-head { font-weight: bold; color: var(--neon-magenta); padding: 5px 0; font-family: 'Impact'; font-size: 1.2rem; }
-        .cal-day { background: #060912; padding: 12px 0; min-height: 42px; position: relative; border: 1px solid var(--border-glow); }
-        .has-event::after { content: ''; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 8px; height: 8px; background: var(--neon-blue); border-radius: 50%; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; font-size: 0.9rem; font-weight: 600; }
+        .cal-day-head { font-family: 'Montserrat', sans-serif; font-weight: 900; color: var(--neon-magenta); padding: 5px 0; font-size: 1.1rem; }
+        .cal-day { background: #05080f; padding: 12px 0; min-height: 44px; position: relative; border: 1px solid #1e293b; }
+        .has-event::after { content: ''; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 8px; height: 8px; background: var(--neon-blue); }
         
         .audio-settings {
-            margin-top: 1.5rem;
-            background: #060912;
-            padding: 1rem;
-            border: 1px dashed var(--border-glow);
-            font-family: sans-serif;
+            margin-top: 2rem;
+            background: #05080f;
+            padding: 1.25rem;
+            border-top: 2px dashed #1e293b;
             font-size: 0.8rem;
         }
-        .audio-settings label { color: var(--neon-blue); font-weight: bold; display: block; margin-bottom: 0.25rem; }
+        .audio-settings label { color: var(--neon-blue); font-weight: 700; display: block; margin-top: 0.5rem; margin-bottom: 0.25rem; text-transform: uppercase;}
     </style>
 </head>
 <body>
 
     <header>
-        <h1>SYSTEM://ALTER.EGOS</h1>
-        <p>Dashboard Protocol Linked // Status Offline Core Active</p>
+        <h1>System://Persona.Hub</h1>
+        <p>Core Data Interface // Active Protocol</p>
     </header>
 
     <!-- MAIN MENU VIEW -->
     <div class="menu-container" id="mainMenu">
-        <div class="menu-btn" onclick="switchView('vaultCard')">01 // VAULT MATRIX <span>💰</span></div>
-        <div class="menu-btn" onclick="switchView('chronoCard')">02 // CHRONO TRACKER <span>📅</span></div>
-        <div class="menu-btn" onclick="switchView('animeCard')">03 // ANIME LOG <span>📺</span></div>
-        <div class="menu-btn" onclick="switchView('libraryCard')">04 // ARCHIVE FILES <span>📚</span></div>
+        <button class="menu-btn" onclick="switchView('vaultCard')">01 // Vault Matrix <span>💰</span></button>
+        <button class="menu-btn" onclick="switchView('chronoCard')">02 // Chrono Tracker <span>📅</span></button>
+        <button class="menu-btn" onclick="switchView('animeCard')">03 // Anime Log <span>📺</span></button>
+        <button class="menu-btn" onclick="switchView('libraryCard')">04 // Archive Files <span>📚</span></button>
     </div>
 
     <!-- SAVINGS SCREEN -->
     <div class="view-section" id="vaultCard">
-        <div class="back-btn" onclick="showMenu()">↩ RETURN TO MENU</div>
-        <h2>💰 Vault Matrix // Finances</h2>
-        <div style="font-size: 1.4rem; margin-bottom: 0.25rem;">NET VALUE: <span id="totalSavings" style="color:var(--neon-green);">₹0</span></div>
+        <div class="back-btn" onclick="showMenu()">↩ Back to System</div>
+        <h2>💰 Vault Matrix</h2>
+        <div style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px;">NET VALUE: <span id="totalSavings" style="color:var(--neon-green);">₹0</span></div>
         <div class="progress-container"><div class="progress-bar" id="savingsProgress"></div></div>
         
-        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1rem; font-family: sans-serif;">
-            <span style="font-size:0.9rem; color:var(--neon-blue);">Target Limit: ₹</span>
-            <input type="number" id="savingsGoal" value="50000" onchange="changeGoal()" style="margin:0; padding: 0.3rem 0.5rem; width: 120px;">
+        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1.5rem;">
+            <span style="font-size:0.9rem; color:var(--neon-blue); font-weight:700; text-transform:uppercase;">Target Goal: ₹</span>
+            <input type="number" id="savingsGoal" value="50000" onchange="changeGoal()" style="margin:0; padding: 0.4rem; width: 130px;">
         </div>
 
-        <input type="text" id="savingsLabel" placeholder="Transaction source tags...">
-        <input type="number" id="savingsAmount" placeholder="Input structural numerical cash...">
+        <input type="text" id="savingsLabel" placeholder="Transaction labels / source notes...">
+        <input type="number" id="savingsAmount" placeholder="Numerical balance adjustments...">
         <div class="btn-group">
-            <button class="action-btn" onclick="modifySavings('add')">➕ Add Entry</button>
-            <button class="action-btn" style="background: var(--neon-magenta); color: #fff;" onclick="modifySavings('sub')">➖ Burn Cash</button>
+            <button class="action-btn" onclick="modifySavings('add')">➕ Deposit</button>
+            <button class="action-btn" style="background: var(--neon-magenta); color: #fff;" onclick="modifySavings('sub')">➖ Expense</button>
         </div>
         
-        <div style="margin-top: 1.5rem;">
-            <h3 style="font-size: 1rem; color: var(--neon-blue); margin-bottom: 0.5rem;">LEDGER STREAM</h3>
-            <div id="savingsHistory" style="max-height: 120px; overflow-y: auto;"></div>
+        <div style="margin-top: 2rem;">
+            <h3 style="font-family: 'Montserrat', sans-serif; font-weight:900; font-style:italic; font-size: 1rem; color: var(--neon-blue); margin-bottom: 0.75rem; text-transform: uppercase;">Ledger History</h3>
+            <div id="savingsHistory" style="max-height: 140px; overflow-y: auto;"></div>
         </div>
 
-        <!-- CUSTOM AUDIO ENGINE MODULE -->
         <div class="audio-settings">
-            <h4 style="color:#fff; margin-bottom: 0.5rem; text-transform: uppercase;">🎵 Custom Audio Matrix (Paste MP3 Links)</h4>
-            <label>Save SFX Audio Link:</label>
+            <h4 style="font-family: 'Montserrat', sans-serif; font-weight:900; color:#fff; text-transform: uppercase;">🎵 Audio System Matrix</h4>
+            <label>Deposit MP3 Link:</label>
             <input type="text" id="saveAudioURL" onchange="updateAudioLinks()" value="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav">
-            <label>Spend SFX Audio Link:</label>
+            <label>Expense MP3 Link:</label>
             <input type="text" id="spendAudioURL" onchange="updateAudioLinks()" value="https://assets.mixkit.co/active_storage/sfx/923/923-84.wav">
         </div>
     </div>
 
     <!-- CALENDAR SCREEN -->
     <div class="view-section" id="chronoCard">
-        <div class="back-btn" onclick="showMenu()">↩ RETURN TO MENU</div>
-        <h2>📅 Sync Chrono // Calendar</h2>
-        <input type="text" id="eventTitle" placeholder="Event Operation Parameters...">
+        <div class="back-btn" onclick="showMenu()">↩ Back to System</div>
+        <h2>📅 Chrono Tracker</h2>
+        <input type="text" id="eventTitle" placeholder="Operation designation...">
         <input type="date" id="eventDate">
-        <button class="action-btn" style="width:100%" onclick="addCalendarEvent()">Commit Event</button>
-        <div style="margin-top:1.5rem;" class="calendar-grid" id="calendarGrid"></div>
+        <button class="action-btn" style="width:100%" onclick="addCalendarEvent()">Commit Timeline</button>
+        <div style="margin-top:2rem;" class="calendar-grid" id="calendarGrid"></div>
     </div>
 
     <!-- ANIME SCREEN -->
     <div class="view-section" id="animeCard">
-        <div class="back-btn" onclick="showMenu()">↩ RETURN TO MENU</div>
-        <h2>📺 Core Log // Anime</h2>
-        <input type="text" id="animeTitle" placeholder="Anime Series Designation...">
-        <input type="text" id="animeEp" placeholder="Runtime Progress Status (e.g. Completed, Ep 05)">
-        <button class="action-btn" style="width:100%" onclick="addAnime()">Inject Entry</button>
-        <div id="animeList" style="margin-top: 1.5rem; max-height: 220px; overflow-y: auto;"></div>
+        <div class="back-btn" onclick="showMenu()">↩ Back to System</div>
+        <h2>📺 Anime Log</h2>
+        <input type="text" id="animeTitle" placeholder="Series designation title...">
+        <input type="text" id="animeEp" placeholder="Node progress status (e.g., Ep 12 / Completed)">
+        <button class="action-btn" style="width:100%" onclick="addAnime()">Inject Record</button>
+        <div id="animeList" style="margin-top: 2rem; max-height: 240px; overflow-y: auto;"></div>
     </div>
 
     <!-- LIBRARY SCREEN -->
     <div class="view-section" id="libraryCard">
-        <div class="back-btn" onclick="showMenu()">↩ RETURN TO MENU</div>
-        <h2>📚 Archive File // Library</h2>
-        <input type="text" id="bookTitle" placeholder="Literary Asset Title...">
-        <input type="text" id="bookAuthor" placeholder="Creator / Record Author...">
+        <div class="back-btn" onclick="showMenu()">↩ Back to System</div>
+        <h2>📚 Archive Files</h2>
+        <input type="text" id="bookTitle" placeholder="Document literary title...">
+        <input type="text" id="bookAuthor" placeholder="Creator / Author designation...">
         <button class="action-btn" style="width:100%" onclick="addBook()">File Archive</button>
-        <div id="bookList" style="margin-top: 1.5rem; max-height: 220px; overflow-y: auto;"></div>
+        <div id="bookList" style="margin-top: 2rem; max-height: 240px; overflow-y: auto;"></div>
     </div>
 
     <script>
-        // System Audio Player Engine 
         function playCustomSound(url) {
             if(!url) return;
             const audio = new Audio(url);
-            audio.volume = 0.4;
-            audio.play().catch(e => console.log("Audio trigger context blocked until user interaction."));
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log("Audio waiting for touch trigger."));
         }
 
         let state = JSON.parse(localStorage.getItem('hubState')) || { 
@@ -271,15 +317,14 @@
             spendSound: "https://assets.mixkit.co/active_storage/sfx/923/923-84.wav"
         };
 
-        // Routing View Controls
         function switchView(cardId) {
             document.getElementById('mainMenu').style.display = 'none';
-            document.querySelectorAll('.view-section').forEach(section => section.style.display = 'none');
+            document.querySelectorAll('.view-section').forEach(s => s.style.display = 'none');
             document.getElementById(cardId).style.display = 'block';
         }
 
         function showMenu() {
-            document.querySelectorAll('.view-section').forEach(section => section.style.display = 'none');
+            document.querySelectorAll('.view-section').forEach(s => s.style.display = 'none');
             document.getElementById('mainMenu').style.display = 'grid';
         }
 
@@ -298,7 +343,7 @@
             const amount = parseFloat(document.getElementById('savingsAmount').value);
             let label = document.getElementById('savingsLabel').value.trim();
             if(isNaN(amount) || amount <= 0) return;
-            if(!label) label = action === 'add' ? 'Matrix Add' : 'Matrix Burn';
+            if(!label) label = action === 'add' ? 'Deposit' : 'Expense';
             
             if(action === 'add') { 
                 state.savings += amount; 
