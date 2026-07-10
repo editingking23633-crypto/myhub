@@ -3,483 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Persona Hub // Tactical Media Matrix</title>
+    <title>Persona Hub // Full Integration</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900;1,900&family=Space+Grotesk:wght@700&display=swap');
-
-        :root {
-            --bg-dark: #090b10;
-            --panel-bg: #ff0055;
-            --neon-cyan: #00f2fe;
-            --neon-magenta: #ff0055;
-            --neon-yellow: #fffb00;
-            --deep-dark: #000000;
-            --pure-white: #ffffff;
-        }
-
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            -webkit-font-smoothing: antialiased;
-        }
+        :root { --bg-dark: #090b10; --neon-cyan: #00f2fe; --neon-magenta: #ff0055; --neon-yellow: #fffb00; --pure-white: #ffffff; }
+        body { background: var(--bg-dark); color: var(--pure-white); font-family: 'Space Grotesk', sans-serif; padding: 2rem; }
         
-        body { 
-            background-color: var(--bg-dark); 
-            color: var(--pure-white); 
-            padding: 2.5rem 1.5rem; 
-            font-family: 'Space Grotesk', sans-serif;
-            overflow-x: hidden;
-            background-image: radial-gradient(circle at 80% 20%, #171226 0%, var(--bg-dark) 60%);
-        }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .menu-btn { background: #111; border: 3px solid var(--pure-white); color: #fff; padding: 1.5rem; cursor: pointer; text-transform: uppercase; font-weight: 900; }
+        .menu-btn:hover { background: var(--neon-yellow); color: #000; }
         
-        header { 
-            margin-bottom: 3.5rem; 
-            border-bottom: 12px solid var(--pure-white); 
-            padding-bottom: 1rem;
-            transform: rotate(-3deg) skewX(-10deg);
-            background: var(--deep-dark);
-            display: inline-block;
-            padding: 0.75rem 3rem 0.75rem 1.5rem;
-            box-shadow: 8px 8px 0px var(--neon-magenta);
-        }
-        header h1 { 
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-style: italic;
-            font-size: 3.2rem; 
-            line-height: 0.9;
-            text-transform: uppercase;
-            letter-spacing: -3px;
-            color: var(--pure-white);
-            text-shadow: 4px 4px 0px var(--neon-cyan);
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            align-items: start;
-        }
-
-        @media (min-width: 900px) {
-            .dashboard-grid {
-                grid-template-columns: 1.1fr 0.9fr;
-            }
-        }
+        .view-section { display: none; max-width: 800px; margin: 0 auto; background: #000; padding: 2rem; border: 4px solid var(--pure-white); }
+        .back-btn { background: var(--neon-cyan); color: #000; padding: 0.5rem 1rem; cursor: pointer; display: inline-block; margin-bottom: 1rem; font-weight: 900; }
         
-        .menu-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.25rem;
-            transform: rotate(-2deg);
-        }
-        
-        .menu-btn {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-style: italic;
-            background: var(--deep-dark);
-            color: var(--pure-white);
-            padding: 1.25rem 2.5rem;
-            font-size: 2.2rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            text-align: left;
-            position: relative;
-            border: 4px solid var(--pure-white);
-            clip-path: polygon(0% 0%, 95% 0%, 100% 100%, 5% 100%);
-            box-shadow: -10px 10px 0px var(--neon-magenta);
-            transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .menu-btn:hover {
-            color: var(--deep-dark);
-            background-color: var(--neon-yellow);
-            transform: scale(1.06) translateX(20px) rotate(2deg);
-            box-shadow: -15px 15px 0px var(--neon-cyan);
-        }
+        /* Calendar */
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 1rem; }
+        .cal-day { background: #222; padding: 10px; text-align: center; border: 1px solid #444; }
+        .has-event { background: var(--neon-magenta); }
 
-        .live-monitor-panel {
-            background-color: var(--deep-dark);
-            border: 6px solid var(--pure-white);
-            padding: 1.75rem;
-            clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
-            box-shadow: 12px 12px 0px var(--neon-magenta);
-        }
-
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            background: #000;
-            border: 4px solid var(--pure-white);
-            margin-bottom: 1.25rem;
-            box-shadow: -6px 6px 0px var(--neon-magenta);
-        }
-        .video-wrapper iframe, .video-wrapper video {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-        }
-
-        .view-section {
-            display: none;
-            max-width: 700px;
-            margin: 0 auto;
-            background-color: var(--deep-dark); 
-            border: 6px solid var(--pure-white); 
-            padding: 2.5rem; 
-            clip-path: polygon(0% 2%, 98% 0%, 100% 96%, 2% 100%);
-            box-shadow: -16px 16px 0px var(--neon-magenta);
-        }
-
-        .back-btn {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            background: var(--neon-cyan);
-            color: #000;
-            padding: 0.75rem 1.75rem;
-            margin-bottom: 2rem;
-            display: inline-block;
-            cursor: pointer;
-            clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
-        }
-
-        input, select { 
-            background: #0d0f14; 
-            border: 3px solid var(--pure-white); 
-            color: var(--pure-white); 
-            padding: 1rem; 
-            margin-bottom: 1rem; 
-            width: 100%; 
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .action-btn { 
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            background-color: var(--neon-cyan); 
-            color: var(--deep-dark); 
-            cursor: pointer; 
-            border: 3px solid var(--deep-dark);
-            padding: 1.1rem;
-            text-transform: uppercase;
-        }
-        .action-btn:hover { background: var(--neon-yellow); }
-
-        .list-item { 
-            display: flex; justify-content: space-between; background: var(--pure-white); 
-            color: var(--deep-dark); padding: 1.1rem 1.5rem; margin-bottom: 0.8rem; font-weight: 700;
-        }
-
-        .history-item {
-            background: #111522;
-            padding: 0.5rem 1rem;
-            margin-bottom: 0.4rem;
-            font-weight: 700;
-        }
-
-        /* CALENDAR INTERFACE MATRIX LAYOUT STYLE */
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; margin-top: 1.5rem; }
-        .cal-day-head { font-family: 'Montserrat', sans-serif; font-weight: 900; color: var(--neon-yellow); padding: 5px 0; font-size: 1.2rem; }
-        .cal-day { background: var(--deep-dark); padding: 12px 0; font-weight: 700; min-height: 44px; position: relative; border: 2px solid #222; font-size: 1rem; }
-        .has-event { background: var(--neon-magenta) !important; color: #000; font-weight: 900; border-color: var(--pure-white); }
-        .has-event::after { content: '⚡'; position: absolute; bottom: 2px; right: 2px; font-size: 0.65rem; }
-
-        /* CENTRAL FILE MAPPING PANEL */
-        .config-matrix-panel {
-            max-width: 1200px;
-            margin: 4rem auto 0 auto;
-            background: #000;
-            border: 4px dashed var(--neon-yellow);
-            padding: 2rem;
-            box-shadow: 0 0 20px rgba(255, 251, 0, 0.15);
-        }
-        .config-matrix-panel h3 {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--neon-yellow);
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            font-size: 1.4rem;
-        }
-        .config-row {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-        @media (min-width: 750px) {
-            .config-row { grid-template-columns: 1fr 1fr 1fr; align-items: end; }
-        }
-        .file-input-wrapper {
-            position: relative;
-            background: #111522;
-            border: 2px dashed var(--neon-cyan);
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            font-weight: 700;
-        }
-        .file-input-wrapper input[type="file"] {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
-        }
+        /* Media Panel */
+        .config-panel { margin-top: 3rem; border: 2px dashed var(--neon-yellow); padding: 2rem; }
+        input, select { width: 100%; padding: 0.8rem; margin: 0.5rem 0; background: #111; color: #fff; border: 1px solid #555; }
+        .action-btn { background: var(--neon-cyan); padding: 1rem; width: 100%; font-weight: 900; cursor: pointer; border: none; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>System://Persona.Combat</h1>
-        <p>Dynamic Media Injector v5.1 // Calendar Fixed</p>
-    </header>
+    <header><h1>System://Persona.Core</h1></header>
 
-    <!-- DASHBOARD VIEW -->
     <div class="dashboard-grid" id="mainDashboardView">
         <div class="menu-container">
-            <button class="menu-btn" onclick="switchView('vaultCard')">💥 01 // VAULT_MATRIX <span>💰</span></button>
-            <button class="menu-btn" onclick="switchView('chronoCard')">💥 02 // CHRONO_TRACKER <span>📅</span></button>
-            <button class="menu-btn" onclick="switchView('animeCard')">💥 03 // CORE_ANIME_LOG <span>📺</span></button>
-            <button class="menu-btn" onclick="switchView('libraryCard')">💥 04 // ARCHIVE_FILES <span>📚</span></button>
+            <button class="menu-btn" onclick="switchView('vaultCard')">01 // VAULT</button>
+            <button class="menu-btn" onclick="switchView('chronoCard')">02 // CHRONO</button>
+            <button class="menu-btn" onclick="switchView('animeCard')">03 // ANIME</button>
         </div>
-
-        <div class="live-monitor-panel">
-            <h3 style="color:var(--neon-cyan); margin-bottom:1rem;">🎬 TRACK RUNNER MEDIA TERMINAL</h3>
-            <div id="mainMenuVideoArea"></div>
-        </div>
+        <div id="mainMenuVideoArea"></div>
     </div>
 
-    <!-- VAULT MATRIX MODE -->
     <div class="view-section" id="vaultCard">
-        <div class="back-btn" onclick="showMenu()">↩ ESCAPE TO DECK</div>
-        <h2>💰 Vault Matrix</h2>
-        <div style="font-size: 2rem; font-weight: 700; margin-bottom:1rem;">BALANCE: <span id="totalSavings" style="color:var(--neon-yellow);">₹0</span></div>
-        <input type="text" id="savingsLabel" placeholder="Transaction note label...">
-        <input type="number" id="savingsAmount" placeholder="Calibration Value (Amount)...">
-        <div style="display:flex; gap:1rem;">
-            <button class="action-btn" style="flex:1" onclick="modifySavings('add')">💥 DEPOSIT</button>
-            <button class="action-btn" style="flex:1; background:var(--neon-magenta); color:#fff;" onclick="modifySavings('sub')">💀 EXPENSE</button>
-        </div>
-        <div id="savingsHistory" style="margin-top:1.5rem; max-height:120px; overflow-y:auto;"></div>
+        <div class="back-btn" onclick="showMenu()">BACK</div>
+        <h2>VAULT MATRIX</h2>
+        <div id="totalSavings">Balance: ₹0</div>
+        <input type="number" id="savingsAmount" placeholder="Amount">
+        <button class="action-btn" onclick="modifySavings('add')">DEPOSIT</button>
     </div>
 
-    <!-- CHRONO TRACKER MODE -->
     <div class="view-section" id="chronoCard">
-        <div class="back-btn" onclick="showMenu()">↩ ESCAPE TO DECK</div>
-        <h2>📅 Chrono Tracker Matrix</h2>
-        <input type="text" id="eventTitle" placeholder="Operation tag designation...">
+        <div class="back-btn" onclick="showMenu()">BACK</div>
+        <h2>CHRONO TRACKER</h2>
+        <input type="text" id="eventTitle" placeholder="Event Name">
         <input type="date" id="eventDate">
-        <button class="action-btn" style="width:100%" onclick="addCalendarEvent()">⚡ SAVE TIMELINE EVENT</button>
-        
-        <!-- CALENDAR INTERFACE MATRIX BLOCK -->
+        <button class="action-btn" onclick="addCalendarEvent()">SAVE EVENT</button>
         <div class="calendar-grid" id="calendarGrid"></div>
     </div>
 
-    <!-- ANIME LOG MODE -->
     <div class="view-section" id="animeCard">
-        <div class="back-btn" onclick="showMenu()">↩ ESCAPE TO DECK</div>
-        <h2>📺 Core Anime Log</h2>
-        <input type="text" id="animeTitle" placeholder="Series Designation...">
-        <input type="text" id="animeEp" placeholder="Node State (e.g. Ep 12)">
-        <button class="action-btn" style="width:100%" onclick="addAnime()">⚡ INJECT RECON DATA</button>
-        <div id="animeList" style="margin-top:2rem;"></div>
+        <div class="back-btn" onclick="showMenu()">BACK</div>
+        <h2>ANIME LOG</h2>
+        <div id="animeList"></div>
     </div>
 
-    <!-- LIBRARY FILES MODE -->
-    <div class="view-section" id="libraryCard">
-        <div class="back-btn" onclick="showMenu()">↩ ESCAPE TO DECK</div>
-        <h2>📚 Archive Literary Files</h2>
-        <input type="text" id="bookTitle" placeholder="Document Title...">
-        <input type="text" id="bookAuthor" placeholder="Creator / Author...">
-        <button class="action-btn" style="width:100%" onclick="addBook()">⚡ FILE SECURE STORAGE</button>
-        <div id="bookList" style="margin-top:2rem;"></div>
-    </div>
-
-    <!-- MASTER FILE CONFIGURATION PANEL -->
-    <div class="config-matrix-panel">
-        <h3>🛠️ Central File Mapping Matrix (No Internet Required)</h3>
-        <div class="config-row">
-            <div>
-                <label style="color:var(--neon-cyan); font-weight:700; display:block; margin-bottom:0.5rem;">1. SELECT TARGET WINDOW</label>
-                <select id="targetCardSlot">
-                    <option value="main">Main Main Dashboard Terminal</option>
-                    <option value="vaultCard">01 // Vault Matrix Card</option>
-                    <option value="chronoCard">02 // Chrono Tracker Card</option>
-                    <option value="animeCard">03 // Core Anime Log Card</option>
-                    <option value="libraryCard">04 // Archive Files Card</option>
-                </select>
-            </div>
-            <div>
-                <label style="color:var(--neon-cyan); font-weight:700; display:block; margin-bottom:0.5rem;">2. SELECT ASSET CLASS</label>
-                <select id="assetTypeSlot">
-                    <option value="video">🎥 Target Terminal Background Video</option>
-                    <option value="sound">🎵 Action Execution Sound Effect</option>
-                </select>
-            </div>
-            <div>
-                <label style="color:var(--neon-cyan); font-weight:700; display:block; margin-bottom:0.5rem;">3. LOAD PC ASSET FILE</label>
-                <div class="file-input-wrapper">
-                    <span id="uploadStatusLabel">CHOOSE FILE FROM PC</span>
-                    <input type="file" id="localFileInjector" accept="audio/*,video/*" onchange="processLocalFile()">
-                </div>
-            </div>
-        </div>
-        <div style="margin-top:1.5rem; text-align:right;">
-            <button class="action-btn" style="background:var(--neon-magenta); color:#fff; font-size:0.9rem; padding:0.6rem 1.5rem;" onclick="clearMediaMatrix()">⚠️ WIPE SAVED PC FILES MEMORY</button>
-        </div>
+    <div class="config-panel">
+        <h3>FILE MAPPING MATRIX</h3>
+        <select id="targetCardSlot">
+            <option value="vaultCard">Vault Card</option>
+            <option value="chronoCard">Chrono Card</option>
+            <option value="animeCard">Anime Card</option>
+        </select>
+        <select id="assetTypeSlot">
+            <option value="video">Video</option>
+            <option value="sound">Sound</option>
+        </select>
+        <input type="file" id="localFileInjector" accept="audio/*,video/*" onchange="processLocalFile()">
     </div>
 
     <script>
-        // Media System Configuration Routing Memory
-        let mediaRoutingTable = JSON.parse(localStorage.getItem('mediaRoutingTable')) || {
-            main: { video: "", sound: "" },
-            vaultCard: { video: "", sound: "" },
-            chronoCard: { video: "", sound: "" },
-            animeCard: { video: "", sound: "" },
-            libraryCard: { video: "", sound: "" }
-        };
+        let mediaTable = JSON.parse(localStorage.getItem('mediaTable')) || {};
+        let state = JSON.parse(localStorage.getItem('state')) || { savings: 0, events: {}, anime: [] };
 
-        let state = JSON.parse(localStorage.getItem('hubState')) || { anime: [], books: [], savings: 0, history: [], events: {} };
-
-        // File Reader Engine
         function processLocalFile() {
-            const fileSlot = document.getElementById('localFileInjector').files[0];
-            const targetCard = document.getElementById('targetCardSlot').value;
-            const assetType = document.getElementById('assetTypeSlot').value;
-            const statusLabel = document.getElementById('uploadStatusLabel');
-
-            if (!fileSlot) return;
-            statusLabel.innerText = "PACKING STREAM...";
-
+            const file = document.getElementById('localFileInjector').files[0];
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64String = e.target.result;
-                try {
-                    mediaRoutingTable[targetCard][assetType] = base64String;
-                    localStorage.setItem('mediaRoutingTable', JSON.stringify(mediaRoutingTable));
-                    statusLabel.innerText = "MOUNT SUCCESS ✅";
-                    setTimeout(() => { statusLabel.innerText = "CHOOSE FILE FROM PC"; }, 2000);
-                    renderVideoFeed('main');
-                } catch(error) {
-                    alert("System Memory Alert: File too heavy for localized sandbox cache browser limits.");
-                    statusLabel.innerText = "MAPPING FAILED ❌";
-                }
+            reader.onload = (e) => {
+                mediaTable[document.getElementById('targetCardSlot').value + "_" + document.getElementById('assetTypeSlot').value] = e.target.result;
+                localStorage.setItem('mediaTable', JSON.stringify(mediaTable));
+                alert("Mounted!");
             };
-            reader.readAsDataURL(fileSlot);
+            reader.readAsDataURL(file);
         }
 
-        function clearMediaMatrix() {
-            if(confirm("Purge memory bank routing files?")) {
-                localStorage.removeItem('mediaRoutingTable');
-                location.reload();
-            }
+        function triggerMedia(cardId) {
+            const sound = mediaTable[cardId + "_sound"];
+            if(sound) new Audio(sound).play();
+            const video = mediaTable[cardId + "_video"];
+            const area = document.getElementById('mainMenuVideoArea');
+            if(video) area.innerHTML = `<video src="${video}" autoplay loop muted style="width:100%"></video>`;
         }
 
-        function triggerSlotAudio(cardId) {
-            const dataString = mediaRoutingTable[cardId]?.sound;
-            if (dataString) {
-                const audio = new Audio(dataString);
-                audio.volume = 0.4;
-                audio.play().catch(e => console.log("Pulse blocked without direct interaction."));
-            }
-        }
-
-        function renderVideoFeed(cardId) {
-            const container = document.getElementById('mainMenuVideoArea');
-            const sourceStream = mediaRoutingTable[cardId]?.video;
-
-            if(!sourceStream) {
-                container.innerHTML = `<div style="background:#000; color:var(--neon-magenta); font-size:0.9rem; height:200px; display:flex; align-items:center; justify-content:center; border:4px dashed var(--pure-white); font-weight:700;">[ MATRIX MONITOR STANDBY // NO MAPPED VIDEO ]</div>`;
-                return;
-            }
-            container.innerHTML = `<div class="video-wrapper"><video id="terminalVideoPlayer" controls autoplay loop muted src="${sourceStream}"></video></div>`;
-            document.getElementById('terminalVideoPlayer').play().catch(e => {});
-        }
-
-        function switchView(cardId) {
-            triggerSlotAudio(cardId);
+        function switchView(id) {
             document.getElementById('mainDashboardView').style.display = 'none';
             document.querySelectorAll('.view-section').forEach(s => s.style.display = 'none');
-            document.getElementById(cardId).style.display = 'block';
-            renderVideoFeed(cardId);
+            document.getElementById(id).style.display = 'block';
+            triggerMedia(id);
         }
 
         function showMenu() {
-            triggerSlotAudio('main');
             document.querySelectorAll('.view-section').forEach(s => s.style.display = 'none');
             document.getElementById('mainDashboardView').style.display = 'grid';
-            renderVideoFeed('main');
         }
 
-        // Calendar System Interface Generation Loop
-        function renderCalendarGridSystem() {
-            const grid = document.getElementById('calendarGrid'); 
-            if(!grid) return;
-            
-            grid.innerHTML = ''; 
-            const dynamicDaysHeader = ['S','M','T','W','T','F','S'];
-            dynamicDaysHeader.forEach(dayCharacter => grid.innerHTML += `<div class="cal-day-head">${dayCharacter}</div>`);
-            
-            for(let dayIndex = 1; dayIndex <= 28; dayIndex++) {
-                let absoluteDateString = `2026-07-${dayIndex < 10 ? '0' + dayIndex : dayIndex}`;
-                let eventTriggerIndicatorClass = state.events[absoluteDateString] ? 'has-event' : ''; 
-                let identityBubbleAttribute = state.events[absoluteDateString] ? `title="${state.events[absoluteDateString]}"` : '';
-                
-                grid.innerHTML += `<div class="cal-day ${eventTriggerIndicatorClass}" ${identityBubbleAttribute}>${dayIndex}</div>`;
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+            for(let i=1; i<=28; i++) {
+                grid.innerHTML += `<div class="cal-day">${i}</div>`;
             }
         }
 
-        // Operation Handlers
-        function modifySavings(action) {
-            const amount = parseFloat(document.getElementById('savingsAmount').value);
-            let label = document.getElementById('savingsLabel').value.trim();
-            if(isNaN(amount) || amount <= 0) return;
-            if(!label) label = action === 'add' ? 'Deposit' : 'Expense';
-            
-            if(action === 'add') { 
-                state.savings += amount; 
-                state.history.unshift({ type: 'add', text: `+ ₹${amount} // ${label}` });
-                triggerSlotAudio('vaultCard');
-            } else { 
-                state.savings -= amount; 
-                state.history.unshift({ type: 'sub', text: `- ₹${amount} // ${label}` });
-                triggerSlotAudio('vaultCard');
-            }
-            document.getElementById('savingsAmount').value = ''; document.getElementById('savingsLabel').value = '';
-            saveState();
-        }
-
-        function addAnime() {
-            const title = document.getElementById('animeTitle').value; const ep = document.getElementById('animeEp').value;
-            if(!title) return; state.anime.push({title, ep}); document.getElementById('animeTitle').value = ''; document.getElementById('animeEp').value = ''; triggerSlotAudio('animeCard'); saveState();
-        }
-        function addBook() {
-            const title = document.getElementById('bookTitle').value; const author = document.getElementById('bookAuthor').value;
-            if(!title) return; state.books.push({title, author}); document.getElementById('bookTitle').value = ''; document.getElementById('bookAuthor').value = ''; triggerSlotAudio('libraryCard'); saveState();
-        }
         function addCalendarEvent() {
-            const txt = document.getElementById('eventTitle').value; const selectedDate = document.getElementById('eventDate').value;
-            if(!txt || !selectedDate) return; 
-            state.events[selectedDate] = txt; 
-            document.getElementById('eventTitle').value = ''; 
-            triggerSlotAudio('chronoCard'); 
-            saveState();
+            state.events[document.getElementById('eventDate').value] = document.getElementById('eventTitle').value;
+            localStorage.setItem('state', JSON.stringify(state));
+            renderCalendar();
         }
 
-        function saveState() { localStorage.setItem('hubState', JSON.stringify(state)); renderAll(); }
-
-        function renderAll() {
-            document.getElementById('animeList').innerHTML = state.anime.map(a => `<div class="list-item"><span>${a.title}</span><span style="color:var(--neon-magenta)">// ${a.ep}</span></div>`).join('');
-            document.getElementById('bookList').innerHTML = state.books.map(b => `<div class="list-item"><span>${b.title}</span><span style="color:#777">// ${b.author}</span></div>`).join('');
-            document.getElementById('totalSavings').innerText = '₹' + state.savings.toLocaleString();
-            document.getElementById('savingsHistory').innerHTML = state.history.map(h => `<div class="history-item" style="color:${h.type==='add'?'var(--neon-cyan)':'var(--neon-magenta)'}">${h.text}</div>`).join('');
-            renderCalendarGridSystem();
+        function modifySavings(type) {
+            state.savings += parseInt(document.getElementById('savingsAmount').value);
+            localStorage.setItem('state', JSON.stringify(state));
+            document.getElementById('totalSavings').innerText = "Balance: ₹" + state.savings;
+            triggerMedia('vaultCard');
         }
-        
-        // Master Initialization
-        renderAll();
-        renderVideoFeed('main');
+
+        renderCalendar();
     </script>
 </body>
 </html>
