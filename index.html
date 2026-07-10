@@ -2,102 +2,80 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Persona Hub // Tactical Command Matrix</title>
+    <title>Persona Hub // Fullscreen Matrix</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900;1,900&family=Space+Grotesk:wght@700&display=swap');
-        :root { --bg-dark: #090b10; --neon-cyan: #00f2fe; --neon-magenta: #ff0055; --neon-yellow: #fffb00; --pure-white: #ffffff; --deep-dark: #000000; }
-        body { background-color: var(--bg-dark); color: var(--pure-white); font-family: 'Space Grotesk', sans-serif; padding: 2rem; overflow-x: hidden; }
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Space+Grotesk:wght@700&display=swap');
         
-        /* Terminal Aesthetics */
-        header { border-bottom: 8px solid var(--pure-white); padding-bottom: 1rem; margin-bottom: 2rem; transform: skewX(-10deg); display: inline-block; }
-        header h1 { font-family: 'Montserrat', sans-serif; font-style: italic; font-size: 2.5rem; text-transform: uppercase; color: var(--pure-white); text-shadow: 3px 3px 0px var(--neon-cyan); }
+        /* 1. Fullscreen Background Layer */
+        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
+        
+        body { margin: 0; font-family: 'Space Grotesk', sans-serif; color: white; background: #000; }
 
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; max-width: 1000px; margin: 0 auto; }
-        .menu-btn { font-family: 'Montserrat', sans-serif; font-weight: 900; font-style: italic; background: var(--deep-dark); color: var(--pure-white); padding: 1.5rem; border: 3px solid var(--pure-white); cursor: pointer; text-transform: uppercase; margin-bottom: 1rem; box-shadow: -8px 8px 0px var(--neon-magenta); transition: 0.2s; width: 100%; }
-        .menu-btn:hover { background: var(--neon-yellow); color: var(--deep-dark); transform: translate(5px, -5px); }
+        /* 2. Interface Layer */
+        .hub-container { padding: 3rem; max-width: 1200px; margin: 0 auto; }
+        header { border-left: 10px solid #ff0055; padding-left: 20px; margin-bottom: 3rem; }
+        h1 { font-family: 'Montserrat', sans-serif; font-size: 3rem; text-transform: uppercase; margin: 0; }
 
-        .view-section { display: none; background: var(--deep-dark); border: 4px solid var(--pure-white); padding: 2rem; box-shadow: -12px 12px 0px var(--neon-magenta); max-width: 800px; margin: 0 auto; }
-        .back-btn { background: var(--neon-cyan); color: #000; font-weight: 900; padding: 0.5rem 1rem; cursor: pointer; display: inline-block; margin-bottom: 1rem; text-transform: uppercase; }
-        
-        .video-container { border: 4px solid var(--pure-white); background: #000; height: 300px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        
-        .config-matrix-panel { margin-top: 4rem; border: 2px dashed var(--neon-yellow); padding: 2rem; background: #000; max-width: 800px; margin-left: auto; margin-right: auto; }
-        input, select { background: #111; color: #fff; border: 2px solid #333; padding: 0.8rem; width: 100%; margin-bottom: 1rem; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .card { background: rgba(0,0,0,0.8); border: 2px solid #fff; padding: 1.5rem; transition: 0.3s; }
+        .card:hover { transform: scale(1.05); border-color: #00f2fe; }
+
+        /* Sound Toggle */
+        #sound-toggle { position: fixed; top: 20px; right: 20px; z-index: 10; cursor: pointer; background: #ff0055; padding: 10px; font-weight: 900; }
     </style>
 </head>
 <body>
 
-    <header><h1>System://Persona.Command</h1></header>
+    <!-- Fullscreen Media -->
+    <video id="bg-video" autoplay loop muted playsinline></video>
+    <div id="sound-toggle" onclick="toggleSound()">🔊 SOUND: OFF</div>
 
-    <div class="dashboard-grid" id="mainDashboardView">
-        <div class="menu-container">
-            <button class="menu-btn" onclick="switchView('main', 'main')">💥 MAIN MENU</button>
-            <button class="menu-btn" onclick="switchView('vaultCard', 'vault')">💰 VAULT MATRIX</button>
-            <button class="menu-btn" onclick="switchView('chronoCard', 'chrono')">📅 CHRONO TRACKER</button>
+    <div class="hub-container">
+        <header>
+            <h1>System://Persona.Hub</h1>
+        </header>
+
+        <div class="card-grid">
+            <div class="card" onclick="location.href='#vault'">💰 VAULT MATRIX</div>
+            <div class="card" onclick="location.href='#calendar'">📅 CHRONO TRACKER</div>
+            <div class="card" onclick="location.href='#anime'">📺 ANIME LOG</div>
+            <div class="card" onclick="location.href='#library'">📚 ARCHIVE</div>
         </div>
-        <div id="mediaDisplayArea" class="video-container">
-            [ TERMINAL STANDBY ]
+
+        <!-- File Mapper at Bottom -->
+        <div style="margin-top:5rem; background:rgba(0,0,0,0.9); padding:2rem; border:1px dashed #fff;">
+            <h3>🛠️ ASSET INJECTOR</h3>
+            <input type="file" id="vidInput" accept="video/*" onchange="loadBg(this)">
+            <input type="file" id="sndInput" accept="audio/*" onchange="loadSnd(this)">
         </div>
-    </div>
-
-    <!-- UI Panels -->
-    <div class="view-section" id="vaultCard">
-        <div class="back-btn" onclick="showMenu()">↩ ESCAPE</div>
-        <h2>VAULT MATRIX</h2>
-    </div>
-
-    <div class="view-section" id="chronoCard">
-        <div class="back-btn" onclick="showMenu()">↩ ESCAPE</div>
-        <h2>CHRONO TRACKER</h2>
-    </div>
-
-    <!-- Mapping Panel -->
-    <div class="config-matrix-panel">
-        <h3 style="color:var(--neon-yellow);">🛠️ ASSET MAPPING MATRIX</h3>
-        <select id="targetSlot"><option value="main">Main Menu</option><option value="vault">Vault Matrix</option><option value="chrono">Chrono Tracker</option></select>
-        <select id="assetSlot"><option value="video">Video</option><option value="sound">Sound</option></select>
-        <input type="file" id="fileInput" accept="audio/*,video/*" onchange="mapFile()">
     </div>
 
     <script>
-        let registry = JSON.parse(localStorage.getItem('registry')) || {};
+        let bgVid = document.getElementById('bg-video');
+        let audio = new Audio();
 
-        function mapFile() {
-            const file = document.getElementById('fileInput').files[0];
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                registry[document.getElementById('targetSlot').value + "_" + document.getElementById('assetSlot').value] = e.target.result;
-                localStorage.setItem('registry', JSON.stringify(registry));
-                alert("Asset Mounted to Registry.");
-            };
-            reader.readAsDataURL(file);
+        // Load background video from PC
+        function loadBg(input) {
+            const file = input.files[0];
+            const url = URL.createObjectURL(file);
+            bgVid.src = url;
         }
 
-        function switchView(id, registryKey) {
-            // Hide Dashboard, Show Panel
-            if(id !== 'main') {
-                document.getElementById('mainDashboardView').style.display = 'none';
-                document.getElementById(id).style.display = 'block';
-            }
-            
-            // Play Mapped Media
-            const videoData = registry[registryKey + "_video"];
-            const soundData = registry[registryKey + "_sound"];
-            
-            if(videoData) {
-                document.getElementById('mediaDisplayArea').innerHTML = `<video src="${videoData}" autoplay loop muted style="width:100%"></video>`;
-            }
-            if(soundData) {
-                new Audio(soundData).play();
-            }
+        // Load sound from PC
+        function loadSnd(input) {
+            const file = input.files[0];
+            audio.src = URL.createObjectURL(file);
+            audio.loop = true;
         }
 
-        function showMenu() {
-            document.querySelectorAll('.view-section').forEach(s => s.style.display = 'none');
-            document.getElementById('mainDashboardView').style.display = 'grid';
-            // Reset Main Menu Media
-            const mainVid = registry["main_video"];
-            if(mainVid) document.getElementById('mediaDisplayArea').innerHTML = `<video src="${mainVid}" autoplay loop muted style="width:100%"></video>`;
+        function toggleSound() {
+            if(audio.paused) {
+                audio.play();
+                document.getElementById('sound-toggle').innerText = "🔊 SOUND: ON";
+            } else {
+                audio.pause();
+                document.getElementById('sound-toggle').innerText = "🔊 SOUND: OFF";
+            }
         }
     </script>
 </body>
