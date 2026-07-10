@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Persona Hub // Core Protocol</title>
+    <title>Persona Hub // Protocol V4</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900;1,900&family=Space+Grotesk:wght@500;700&display=swap');
 
@@ -58,7 +58,7 @@
             margin-top: 0.5rem;
         }
 
-        /* DYNAMIC SPLIT SYSTEM ON MAIN MENU */
+        /* NEW SPLIT SYSTEM FOR THE MAIN DASHBOARD */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -109,7 +109,7 @@
         }
         .menu-btn:hover span { color: var(--pure-white); }
 
-        /* PERMANENT LIVE SCREEN BLOCK */
+        /* PERMANENT LIVE MEDIA HUB PANEL ON RIGHT */
         .live-monitor-panel {
             background-color: var(--panel-bg);
             border: 4px solid var(--pure-white);
@@ -146,7 +146,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
         }
 
-        /* VIEW CARD POPUPS */
+        /* EXPANDABLE SECTION SECTIONS */
         .view-section {
             display: none;
             max-width: 650px;
@@ -271,9 +271,9 @@
         <p>Core Data Interface // Active Protocol</p>
     </header>
 
-    <!-- INTERACTIVE DASHBOARD SECTION -->
+    <!-- CORE INTERACTIVE DASHBOARD GRID -->
     <div class="dashboard-grid" id="mainDashboardView">
-        <!-- LEFT SYSTEM BUTTONS -->
+        <!-- LEFT: NAVIGATION STACK -->
         <div class="menu-container">
             <button class="menu-btn" onclick="switchView('vaultCard')">01 // Vault Matrix <span>💰</span></button>
             <button class="menu-btn" onclick="switchView('chronoCard')">02 // Chrono Tracker <span>📅</span></button>
@@ -281,7 +281,7 @@
             <button class="menu-btn" onclick="switchView('libraryCard')">04 // Archive Files <span>📚</span></button>
         </div>
 
-        <!-- RIGHT LIVE TELEMETRY MEDIA FEED -->
+        <!-- RIGHT: LIVE MEDIA HUB TERMINAL -->
         <div class="live-monitor-panel">
             <h3>🎬 Main Menu Terminal Feed</h3>
             <div id="mainMenuVideoArea"></div>
@@ -290,7 +290,7 @@
         </div>
     </div>
 
-    <!-- SAVINGS SCREEN -->
+    <!-- SAVINGS MATRIX CARD -->
     <div class="view-section" id="vaultCard">
         <div class="back-btn" onclick="showMenu()">↩ Back to System</div>
         <h2>💰 Vault Matrix</h2>
@@ -323,7 +323,7 @@
         </div>
     </div>
 
-    <!-- CALENDAR SCREEN -->
+    <!-- CHRONO TRACKER CARD -->
     <div class="view-section" id="chronoCard">
         <div class="back-btn" onclick="showMenu()">↩ Back to System</div>
         <h2>📅 Chrono Tracker</h2>
@@ -333,7 +333,7 @@
         <div style="margin-top:2rem;" class="calendar-grid" id="calendarGrid"></div>
     </div>
 
-    <!-- ANIME SCREEN -->
+    <!-- ANIME RECORD TRACKER CARD -->
     <div class="view-section" id="animeCard">
         <div class="back-btn" onclick="showMenu()">↩ Back to System</div>
         <h2>📺 Anime Log</h2>
@@ -343,7 +343,7 @@
         <div id="animeList" style="margin-top: 2rem; max-height: 240px; overflow-y: auto;"></div>
     </div>
 
-    <!-- LIBRARY SCREEN -->
+    <!-- FILE ARCHIVE LITERARY CARD -->
     <div class="view-section" id="libraryCard">
         <div class="back-btn" onclick="showMenu()">↩ Back to System</div>
         <h2>📚 Archive Files</h2>
@@ -358,7 +358,7 @@
             if(!url) return;
             const audio = new Audio(url);
             audio.volume = 0.3;
-            audio.play().catch(e => console.log("Audio waiting for system handshake."));
+            audio.play().catch(e => console.log("Audio awaiting activation protocol."));
         }
 
         let state = JSON.parse(localStorage.getItem('hubState')) || { 
