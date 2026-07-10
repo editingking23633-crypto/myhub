@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Persona Hub // Combat Deck</title>
+    <title>Persona Hub // Protocol Active</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900;1,900&family=Space+Grotesk:wght@700&display=swap');
 
@@ -33,7 +33,6 @@
             background-image: radial-gradient(circle at 80% 20%, #171226 0%, var(--bg-dark) 60%);
         }
         
-        /* AGGRESSIVE PERSONA COMBAT HEADER */
         header { 
             margin-bottom: 3.5rem; 
             border-bottom: 12px solid var(--pure-white); 
@@ -65,7 +64,6 @@
             text-shadow: 2px 2px 0px var(--deep-dark);
         }
 
-        /* 2-COLUMN SPLIT COMBAT LAYOUT */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -81,7 +79,6 @@
             }
         }
         
-        /* THE PHANTOM MENU TRACKS */
         .menu-container {
             display: grid;
             grid-template-columns: 1fr;
@@ -102,13 +99,11 @@
             text-align: left;
             position: relative;
             border: 4px solid var(--pure-white);
-            /* Wild angled cutout */
             clip-path: polygon(0% 0%, 95% 0%, 100% 100%, 5% 100%);
             box-shadow: -10px 10px 0px var(--neon-magenta);
             transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        /* Crazy combat selection hover shifts */
         .menu-btn:hover {
             color: var(--deep-dark);
             background-color: var(--neon-yellow);
@@ -128,7 +123,6 @@
             transform: scale(1.2) rotate(-10deg);
         }
 
-        /* PERMANENT COMBAT TERMINAL PANEL */
         .live-monitor-panel {
             background-color: var(--deep-dark);
             border: 6px solid var(--pure-white);
@@ -167,7 +161,6 @@
             top: 0; left: 0; width: 100%; height: 100%;
         }
 
-        /* LIGHTBOX POPUP PANELS (BATTLE MODES) */
         .view-section {
             display: none;
             max-width: 700px;
@@ -191,7 +184,7 @@
             font-weight: 900;
             font-style: italic;
             background: var(--neon-cyan);
-            color: var(--text-dark);
+            color: #000;
             padding: 0.75rem 1.75rem;
             margin-bottom: 2rem;
             display: inline-block;
@@ -199,4 +192,342 @@
             font-size: 1.1rem;
             text-transform: uppercase;
             border: 2px solid var(--deep-dark);
-            clip-path: polygon(0 0, 100% 0,
+            clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+            box-shadow: -4px 4px 0px var(--neon-magenta);
+        }
+        .back-btn:hover { background: var(--neon-yellow); transform: translateY(-2px); }
+
+        h2 { 
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            font-size: 2.4rem; 
+            margin-bottom: 1.75rem; 
+            color: var(--pure-white); 
+            text-transform: uppercase;
+            border-bottom: 6px solid var(--neon-magenta);
+            padding-bottom: 0.5rem;
+            text-shadow: 4px 4px 0px var(--neon-cyan);
+        }
+        
+        input { 
+            background: #0d0f14; 
+            border: 3px solid var(--pure-white); 
+            color: var(--pure-white); 
+            padding: 1rem; 
+            margin-bottom: 1rem; 
+            width: 100%; 
+            outline: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transform: skewX(-4deg);
+        }
+        input:focus { border-color: var(--neon-yellow); background: #000; box-shadow: 0 0 10px var(--neon-cyan); }
+        
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .action-btn { 
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            background-color: var(--neon-cyan); 
+            color: var(--deep-dark); 
+            cursor: pointer; 
+            border: 3px solid var(--deep-dark);
+            padding: 1.1rem;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+            box-shadow: -4px 4px 0px var(--pure-white);
+        }
+        .action-btn:hover { background: var(--neon-yellow); transform: translate(2px, -2px); box-shadow: -6px 6px 0px var(--neon-magenta); }
+        
+        .list-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            background: var(--pure-white); 
+            color: var(--deep-dark);
+            padding: 1.1rem 1.5rem; 
+            margin-bottom: 0.8rem; 
+            border-left: 10px solid var(--neon-magenta); 
+            font-weight: 700;
+            font-size: 1.15rem;
+            transform: skewX(-6deg);
+            box-shadow: -4px 4px 0px var(--neon-cyan);
+        }
+        
+        .history-item {
+            background: #111522;
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-right: 4px solid var(--neon-cyan);
+        }
+        
+        .progress-container { background: #111522; height: 26px; width: 100%; margin: 1.5rem 0; border: 4px solid var(--pure-white); transform: skewX(-8deg); }
+        .progress-bar { background: linear-gradient(90deg, var(--neon-magenta), var(--neon-yellow)); height: 100%; width: 0%; transition: width 0.4s ease; }
+        
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+        .cal-day-head { font-family: 'Montserrat', sans-serif; font-weight: 900; color: var(--neon-yellow); padding: 5px 0; font-size: 1.3rem; text-shadow: 2px 2px 0px #000; }
+        .cal-day { background: var(--deep-dark); padding: 14px 0; font-weight: 700; min-height: 48px; position: relative; border: 2px solid #222; font-size: 1.1rem;}
+        .has-event { background: var(--neon-magenta) !important; color: #000; font-weight: 900; border-color: var(--pure-white); }
+        .has-event::after { content: '⚡'; position: absolute; bottom: 2px; right: 2px; font-size: 0.65rem; }
+        
+        .audio-settings {
+            margin-top: 2.5rem;
+            background: #0a0d14;
+            padding: 1.5rem;
+            border: 3px dashed var(--neon-magenta);
+        }
+        .audio-settings label { color: var(--neon-cyan); font-weight: 700; display: block; margin-top: 0.75rem; margin-bottom: 0.25rem; text-transform: uppercase; font-size: 0.85rem;}
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>System://Persona.Combat</h1>
+        <p>Phase Trigger Matrix // Protocol Active</p>
+    </header>
+
+    <div class="dashboard-grid" id="mainDashboardView">
+        <div class="menu-container">
+            <button class="menu-btn" onclick="switchView('vaultCard')">💥 01 // VAULT_MATRIX <span>💰</span></button>
+            <button class="menu-btn" onclick="switchView('chronoCard')">💥 02 // CHRONO_TRACKER <span>📅</span></button>
+            <button class="menu-btn" onclick="switchView('animeCard')">💥 03 // CORE_ANIME_LOG <span>📺</span></button>
+            <button class="menu-btn" onclick="switchView('libraryCard')">💥 04 // ARCHIVE_FILES <span>📚</span></button>
+        </div>
+
+        <div class="live-monitor-panel">
+            <h3>🎬 LIVE TERMINAL STREAM</h3>
+            <div id="mainMenuVideoArea"></div>
+            <input type="text" id="quickMediaURL" placeholder="Mount MP4 Video URL or YouTube Embedded Iframe Frame...">
+            <button class="action-btn" style="width:100%; padding:0.75rem; background:var(--neon-magenta); color:#fff; font-size:1rem;" onclick="updateMainMenuMedia()">⚡ MOUNT MEDIA SOURCE ⚡</button>
+        </div>
+    </div>
+
+    <div class="view-section" id="vaultCard">
+        <div class="back-btn" onclick="showMenu()">↩ ESCAPE COMBAT</div>
+        <h2>💰 Vault Matrix // Core Asset</h2>
+        <div style="font-size: 2rem; font-weight: 700; text-shadow: 2px 2px 0px #000;">NET VALUE: <span id="totalSavings" style="color:var(--neon-yellow);">₹0</span></div>
+        <div class="progress-container"><div class="progress-bar" id="savingsProgress"></div></div>
+        
+        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1.5rem;">
+            <span style="font-size:1.1rem; color:var(--neon-cyan); text-transform:uppercase;">TARGET GOAL: ₹</span>
+            <input type="number" id="savingsGoal" value="50000" onchange="changeGoal()" style="margin:0; padding: 0.5rem; width: 160px; text-align: center;">
+        </div>
+
+        <input type="text" id="savingsLabel" placeholder="Transaction parameters / Source details...">
+        <input type="number" id="savingsAmount" placeholder="Balance calibration metric (Value)...">
+        <div class="btn-group">
+            <button class="action-btn" onclick="modifySavings('add')">💥 DEPOSIT</button>
+            <button class="action-btn" style="background: var(--neon-magenta); color: #fff;" onclick="modifySavings('sub')">💀 EXPENSE</button>
+        </div>
+        
+        <div style="margin-top: 2rem;">
+            <h3 style="font-family: 'Montserrat', sans-serif; font-weight:900; font-style:italic; font-size: 1.2rem; color: var(--neon-cyan); margin-bottom: 0.75rem; text-transform: uppercase;">TRANSACTION LEDGER STREAM</h3>
+            <div id="savingsHistory" style="max-height: 160px; overflow-y: auto;"></div>
+        </div>
+
+        <div class="audio-settings">
+            <h4 style="font-family: 'Montserrat', sans-serif; font-weight:900; color:#fff; text-transform: uppercase;">🎵 CUSTOM AUDIO LINKS</h4>
+            <label>Deposit Track (MP3/WAV Link):</label>
+            <input type="text" id="saveAudioURL" onchange="updateAudioLinks()" value="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav">
+            <label>Expense Track (MP3/WAV Link):</label>
+            <input type="text" id="spendAudioURL" onchange="updateAudioLinks()" value="https://assets.mixkit.co/active_storage/sfx/923/923-84.wav">
+        </div>
+    </div>
+
+    <div class="view-section" id="chronoCard">
+        <div class="back-btn" onclick="showMenu()">↩ ESCAPE COMBAT</div>
+        <h2>📅 Chrono Tracker // Calendar Matrix</h2>
+        <input type="text" id="eventTitle" placeholder="Deployment target tags...">
+        <input type="date" id="eventDate">
+        <button class="action-btn" style="width:100%" onclick="addCalendarEvent()">⚡ COMMIT OPERATION TIMELINE</button>
+        <div style="margin-top:2.5rem;" class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
+    <div class="view-section" id="animeCard">
+        <div class="back-btn" onclick="showMenu()">↩ ESCAPE COMBAT</div>
+        <h2>📺 Core Log // Anime Tracker</h2>
+        <input type="text" id="animeTitle" placeholder="Anime Series Designation...">
+        <input type="text" id="animeEp" placeholder="Data core status node (e.g. Completed, Ep 14)">
+        <button class="action-btn" style="width:100%" onclick="addAnime()">⚡ INJECT SERIAL DATAFEED</button>
+        <div id="animeList" style="margin-top: 2rem; max-height: 260px; overflow-y: auto;"></div>
+    </div>
+
+    <div class="view-section" id="libraryCard">
+        <div class="back-btn" onclick="showMenu()">↩ ESCAPE COMBAT</div>
+        <h2>📚 Archive Files // Library Matrix</h2>
+        <input type="text" id="bookTitle" placeholder="Book Literary Designation...">
+        <input type="text" id="bookAuthor" placeholder="Record Author Designation...">
+        <button class="action-btn" style="width:100%" onclick="addBook()">⚡ COLD ARCHIVE DATA DOCUMENT</button>
+        <div id="bookList" style="margin-top: 2rem; max-height: 260px; overflow-y: auto;"></div>
+    </div>
+
+    <script>
+        let state = JSON.parse(localStorage.getItem('hubState')) || { 
+            anime: [], books: [], savings: 0, savingsGoal: 50000, history: [], events: {}, mediaFeed: "",
+            saveSound: "https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav",
+            spendSound: "https://assets.mixkit.co/active_storage/sfx/923/923-84.wav"
+        };
+
+        let audioCtx = null;
+        function playPersonaBeep(type) {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+                let now = audioCtx.currentTime;
+                
+                if(type === 'menu') {
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(880, now);
+                    osc.frequency.setValueAtTime(1320, now + 0.05);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.start(now); osc.stop(now + 0.12);
+                } else if (type === 'back') {
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(330, now);
+                    osc.frequency.linearRampToValueAtTime(110, now + 0.15);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.start(now); osc.stop(now + 0.15);
+                }
+            } catch(e) { console.log(e); }
+        }
+
+        function playCustomSound(url, type) {
+            playPersonaBeep(type);
+            if(!url) return;
+            try {
+                let audio = new Audio(url);
+                audio.volume = 0.25;
+                audio.play().catch(e => console.log("Audio pipeline queued."));
+            } catch(e) {}
+        }
+
+        function switchView(cardId) {
+            playPersonaBeep('menu');
+            document.getElementById('mainDashboardView').style.display = 'none';
+            document.querySelectorAll('.view-section').forEach(s => s.style.display = 'none');
+            document.getElementById(cardId).style.display = 'block';
+        }
+
+        function showMenu() {
+            playPersonaBeep('back');
+            document.querySelectorAll('.view-section').forEach(s => s.style.display = 'none');
+            document.getElementById('mainDashboardView').style.display = 'grid';
+        }
+
+        function updateAudioLinks() {
+            state.saveSound = document.getElementById('saveAudioURL').value;
+            state.spendSound = document.getElementById('spendAudioURL').value;
+            localStorage.setItem('hubState', JSON.stringify(state));
+        }
+
+        function changeGoal() {
+            const val = parseFloat(document.getElementById('savingsGoal').value);
+            if(!isNaN(val) && val > 0) { state.savingsGoal = val; saveState(); }
+        }
+
+        function modifySavings(action) {
+            const amount = parseFloat(document.getElementById('savingsAmount').value);
+            let label = document.getElementById('savingsLabel').value.trim();
+            if(isNaN(amount) || amount <= 0) return;
+            if(!label) label = action === 'add' ? 'Deposit Matrix' : 'Expense Matrix';
+            
+            if(action === 'add') { 
+                state.savings += amount; 
+                state.history.unshift({ type: 'add', text: `CRITICAL // + ₹${amount} -> [ ${label} ]` });
+                playCustomSound(state.saveSound, 'menu');
+            } 
+            else if(action === 'sub') { 
+                state.savings -= amount; 
+                state.history.unshift({ type: 'sub', text: `BURNED // - ₹${amount} -> [ ${label} ]` });
+                playCustomSound(state.spendSound, 'back');
+            }
+            document.getElementById('savingsAmount').value = '';
+            document.getElementById('savingsLabel').value = '';
+            saveState();
+        }
+
+        function addAnime() {
+            const title = document.getElementById('animeTitle').value; const ep = document.getElementById('animeEp').value;
+            if(!title) return; state.anime.push({title, ep}); document.getElementById('animeTitle').value = ''; document.getElementById('animeEp').value = ''; playPersonaBeep('menu'); saveState();
+        }
+        function addBook() {
+            const title = document.getElementById('bookTitle').value; const author = document.getElementById('bookAuthor').value;
+            if(!title) return; state.books.push({title, author}); document.getElementById('bookTitle').value = ''; document.getElementById('bookAuthor').value = ''; playPersonaBeep('menu'); saveState();
+        }
+        function addCalendarEvent() {
+            const txt = document.getElementById('eventTitle').value; const date = document.getElementById('eventDate').value;
+            if(!txt || !date) return; state.events[date] = txt; document.getElementById('eventTitle').value = ''; playPersonaBeep('menu'); saveState();
+        }
+
+        function updateMainMenuMedia() {
+            const val = document.getElementById('quickMediaURL').value.trim();
+            state.mediaFeed = val;
+            playPersonaBeep('menu');
+            saveState();
+        }
+
+        function renderVideoFeed() {
+            const container = document.getElementById('mainMenuVideoArea');
+            if(!state.mediaFeed) { 
+                container.innerHTML = `<div style="background:#000; color:var(--neon-magenta); font-size:1rem; height:200px; display:flex; align-items:center; justify-content:center; border:4px dashed var(--pure-white); font-weight:700; transform: skewX(-3deg); text-shadow:1px 1px 0px #000;">[ WARNING: NO MEDIA FEED CONFIGURED // STANDBY ]</div>`; 
+                return; 
+            }
+            
+            if(state.mediaFeed.includes('<iframe')) {
+                container.innerHTML = `<div class="video-wrapper">${state.mediaFeed}</div>`;
+            } else {
+                container.innerHTML = `<div class="video-wrapper"><video controls autoplay loop muted src="${state.mediaFeed}"></video></div>`;
+            }
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid'); grid.innerHTML = ''; const days = ['S','M','T','W','T','F','S'];
+            days.forEach(d => grid.innerHTML += `<div class="cal-day-head">${d}</div>`);
+            for(let i=1; i<=28; i++) {
+                let dateStr = `2026-07-${i < 10 ? '0'+i : i}`;
+                let hasEv = state.events[dateStr] ? 'has-event' : ''; let titleAttr = state.events[dateStr] ? `title="${state.events[dateStr]}"` : '';
+                grid.innerHTML += `<div class="cal-day ${hasEv}" ${titleAttr}>${i}</div>`;
+            }
+        }
+
+        function saveState() { localStorage.setItem('hubState', JSON.stringify(state)); renderAll(); }
+
+        function renderAll() {
+            document.getElementById('animeList').innerHTML = state.anime.map(a => `<div class="list-item"><span>${a.title}</span><span style="color:var(--neon-magenta)">// ${a.ep}</span></div>`).join('');
+            document.getElementById('bookList').innerHTML = state.books.map(b => `<div class="list-item"><span>${b.title}</span><span style="color:#777">// ${b.author}</span></div>`).join('');
+            document.getElementById('totalSavings').innerText = '₹' + state.savings.toLocaleString();
+            document.getElementById('savingsGoal').value = state.savingsGoal;
+            document.getElementById('saveAudioURL').value = state.saveSound || "";
+            document.getElementById('spendAudioURL').value = state.spendSound || "";
+            document.getElementById('quickMediaURL').value = state.mediaFeed || "";
+            
+            let percent = Math.min((state.savings / state.savingsGoal) * 100, 100); 
+            document.getElementById('savingsProgress').style.width = Math.max(percent, 0) + '%';
+            document.getElementById('savingsHistory').innerHTML = state.history.map(h => `<div class="history-item"><span style="color:${h.type === 'add' ? 'var(--neon-green)' : 'var(--neon-magenta)'}">${h.text}</span></div>`).join('');
+            renderCalendar();
+            renderVideoFeed();
+        }
+        renderAll();
+    </script>
+</body>
+</html>
