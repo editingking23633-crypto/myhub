@@ -176,7 +176,21 @@
             color: var(--deep-dark); padding: 1.1rem 1.5rem; margin-bottom: 0.8rem; font-weight: 700;
         }
 
-        /* HARDCORE MEDIA CONFIGURATION MATRIX CONTROL PANEL */
+        .history-item {
+            background: #111522;
+            padding: 0.5rem 1rem;
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+        }
+
+        /* CALENDAR INTERFACE MATRIX LAYOUT STYLE */
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; margin-top: 1.5rem; }
+        .cal-day-head { font-family: 'Montserrat', sans-serif; font-weight: 900; color: var(--neon-yellow); padding: 5px 0; font-size: 1.2rem; }
+        .cal-day { background: var(--deep-dark); padding: 12px 0; font-weight: 700; min-height: 44px; position: relative; border: 2px solid #222; font-size: 1rem; }
+        .has-event { background: var(--neon-magenta) !important; color: #000; font-weight: 900; border-color: var(--pure-white); }
+        .has-event::after { content: '⚡'; position: absolute; bottom: 2px; right: 2px; font-size: 0.65rem; }
+
+        /* CENTRAL FILE MAPPING PANEL */
         .config-matrix-panel {
             max-width: 1200px;
             margin: 4rem auto 0 auto;
@@ -218,9 +232,10 @@
 
     <header>
         <h1>System://Persona.Combat</h1>
-        <p>Dynamic Media Injector v5</p>
+        <p>Dynamic Media Injector v5.1 // Calendar Fixed</p>
     </header>
 
+    <!-- DASHBOARD VIEW -->
     <div class="dashboard-grid" id="mainDashboardView">
         <div class="menu-container">
             <button class="menu-btn" onclick="switchView('vaultCard')">💥 01 // VAULT_MATRIX <span>💰</span></button>
@@ -235,6 +250,7 @@
         </div>
     </div>
 
+    <!-- VAULT MATRIX MODE -->
     <div class="view-section" id="vaultCard">
         <div class="back-btn" onclick="showMenu()">↩ ESCAPE TO DECK</div>
         <h2>💰 Vault Matrix</h2>
@@ -248,14 +264,19 @@
         <div id="savingsHistory" style="margin-top:1.5rem; max-height:120px; overflow-y:auto;"></div>
     </div>
 
+    <!-- CHRONO TRACKER MODE -->
     <div class="view-section" id="chronoCard">
         <div class="back-btn" onclick="showMenu()">↩ ESCAPE TO DECK</div>
         <h2>📅 Chrono Tracker Matrix</h2>
         <input type="text" id="eventTitle" placeholder="Operation tag designation...">
         <input type="date" id="eventDate">
         <button class="action-btn" style="width:100%" onclick="addCalendarEvent()">⚡ SAVE TIMELINE EVENT</button>
+        
+        <!-- CALENDAR INTERFACE MATRIX BLOCK -->
+        <div class="calendar-grid" id="calendarGrid"></div>
     </div>
 
+    <!-- ANIME LOG MODE -->
     <div class="view-section" id="animeCard">
         <div class="back-btn" onclick="showMenu()">↩ ESCAPE TO DECK</div>
         <h2>📺 Core Anime Log</h2>
@@ -265,6 +286,7 @@
         <div id="animeList" style="margin-top:2rem;"></div>
     </div>
 
+    <!-- LIBRARY FILES MODE -->
     <div class="view-section" id="libraryCard">
         <div class="back-btn" onclick="showMenu()">↩ ESCAPE TO DECK</div>
         <h2>📚 Archive Literary Files</h2>
@@ -274,6 +296,7 @@
         <div id="bookList" style="margin-top:2rem;"></div>
     </div>
 
+    <!-- MASTER FILE CONFIGURATION PANEL -->
     <div class="config-matrix-panel">
         <h3>🛠️ Central File Mapping Matrix (No Internet Required)</h3>
         <div class="config-row">
@@ -308,7 +331,7 @@
     </div>
 
     <script>
-        // System Config State Routing Table
+        // Media System Configuration Routing Memory
         let mediaRoutingTable = JSON.parse(localStorage.getItem('mediaRoutingTable')) || {
             main: { video: "", sound: "" },
             vaultCard: { video: "", sound: "" },
@@ -319,7 +342,7 @@
 
         let state = JSON.parse(localStorage.getItem('hubState')) || { anime: [], books: [], savings: 0, history: [], events: {} };
 
-        // Real-time FileReader Data-Bypass Streamer
+        // File Reader Engine
         function processLocalFile() {
             const fileSlot = document.getElementById('localFileInjector').files[0];
             const targetCard = document.getElementById('targetCardSlot').value;
@@ -339,7 +362,7 @@
                     setTimeout(() => { statusLabel.innerText = "CHOOSE FILE FROM PC"; }, 2000);
                     renderVideoFeed('main');
                 } catch(error) {
-                    alert("System Memory Alert: This local file is too large for your browser's local sandbox memory storage. Try a smaller compression or shorter audio/video clip!");
+                    alert("System Memory Alert: File too heavy for localized sandbox cache browser limits.");
                     statusLabel.innerText = "MAPPING FAILED ❌";
                 }
             };
@@ -358,7 +381,7 @@
             if (dataString) {
                 const audio = new Audio(dataString);
                 audio.volume = 0.4;
-                audio.play().catch(e => console.log("Stream waiting user interaction pulse."));
+                audio.play().catch(e => console.log("Pulse blocked without direct interaction."));
             }
         }
 
@@ -389,7 +412,25 @@
             renderVideoFeed('main');
         }
 
-        // Standard Operation Modifiers
+        // Calendar System Interface Generation Loop
+        function renderCalendarGridSystem() {
+            const grid = document.getElementById('calendarGrid'); 
+            if(!grid) return;
+            
+            grid.innerHTML = ''; 
+            const dynamicDaysHeader = ['S','M','T','W','T','F','S'];
+            dynamicDaysHeader.forEach(dayCharacter => grid.innerHTML += `<div class="cal-day-head">${dayCharacter}</div>`);
+            
+            for(let dayIndex = 1; dayIndex <= 28; dayIndex++) {
+                let absoluteDateString = `2026-07-${dayIndex < 10 ? '0' + dayIndex : dayIndex}`;
+                let eventTriggerIndicatorClass = state.events[absoluteDateString] ? 'has-event' : ''; 
+                let identityBubbleAttribute = state.events[absoluteDateString] ? `title="${state.events[absoluteDateString]}"` : '';
+                
+                grid.innerHTML += `<div class="cal-day ${eventTriggerIndicatorClass}" ${identityBubbleAttribute}>${dayIndex}</div>`;
+            }
+        }
+
+        // Operation Handlers
         function modifySavings(action) {
             const amount = parseFloat(document.getElementById('savingsAmount').value);
             let label = document.getElementById('savingsLabel').value.trim();
@@ -417,6 +458,14 @@
             const title = document.getElementById('bookTitle').value; const author = document.getElementById('bookAuthor').value;
             if(!title) return; state.books.push({title, author}); document.getElementById('bookTitle').value = ''; document.getElementById('bookAuthor').value = ''; triggerSlotAudio('libraryCard'); saveState();
         }
+        function addCalendarEvent() {
+            const txt = document.getElementById('eventTitle').value; const selectedDate = document.getElementById('eventDate').value;
+            if(!txt || !selectedDate) return; 
+            state.events[selectedDate] = txt; 
+            document.getElementById('eventTitle').value = ''; 
+            triggerSlotAudio('chronoCard'); 
+            saveState();
+        }
 
         function saveState() { localStorage.setItem('hubState', JSON.stringify(state)); renderAll(); }
 
@@ -425,9 +474,10 @@
             document.getElementById('bookList').innerHTML = state.books.map(b => `<div class="list-item"><span>${b.title}</span><span style="color:#777">// ${b.author}</span></div>`).join('');
             document.getElementById('totalSavings').innerText = '₹' + state.savings.toLocaleString();
             document.getElementById('savingsHistory').innerHTML = state.history.map(h => `<div class="history-item" style="color:${h.type==='add'?'var(--neon-cyan)':'var(--neon-magenta)'}">${h.text}</div>`).join('');
+            renderCalendarGridSystem();
         }
         
-        // Boot System Initialization Pipeline
+        // Master Initialization
         renderAll();
         renderVideoFeed('main');
     </script>
