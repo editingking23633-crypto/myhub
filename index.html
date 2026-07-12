@@ -1,66 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Persona Hub // Tactical Matrix</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900;1,900&family=Space+Grotesk:wght@700&display=swap');
-        
-        body, html { margin: 0; padding: 0; height: 100%; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; }
-        
-        /* Fullscreen Video Background */
-        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
-
-        /* Kinetic Menu */
-        #main-menu { 
-            display: flex; flex-direction: column; justify-content: center; height: 100vh; padding-left: 10%; 
-            transition: all 0.5s ease-in-out;
-        }
-        .menu-item { 
-            font-size: 3.5rem; font-weight: 900; text-transform: uppercase; cursor: pointer;
-            margin: 0.5rem 0; color: #fff; transition: 0.3s;
-        }
-        .menu-item:hover { color: #00f2fe; transform: translateX(20px); letter-spacing: 5px; }
-
-        /* Panel Animation */
-        .panel { 
-            display: none; position: absolute; top: 0; right: -100%; width: 50%; height: 100vh; 
-            background: rgba(0,0,0,0.9); border-left: 5px solid #ff0055; padding: 3rem;
-            transition: right 0.5s ease-in-out; z-index: 10;
-        }
-        .panel.active { right: 0; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Full-screen Video Background -->
+    <video autoplay muted loop id="bg-video">
+        <source src="your-video.mp4" type="video/mp4">
+    </video>
 
-    <video id="bg-video" autoplay loop muted playsinline></video>
+    <div class="overlay">
+        <h1>My Personal Dashboard</h1>
+        <nav>
+            <button onclick="playSound(); showSection('savings')">Savings</button>
+            <button onclick="playSound(); showSection('anime')">Anime</button>
+            <button onclick="playSound(); showSection('books')">Books</button>
+        </nav>
 
-    <!-- Kinetic Menu -->
-    <div id="main-menu">
-        <div class="menu-item" onclick="openPanel('vault')">VAULT MATRIX</div>
-        <div class="menu-item" onclick="openPanel('calendar')">CALENDAR</div>
-        <div class="menu-item" onclick="openPanel('anime')">ANIME LOG</div>
+        <div id="content-area">
+            <!-- Sections will appear here -->
+        </div>
     </div>
 
-    <!-- Animated Panels -->
-    <div id="vault" class="panel"><h2>VAULT MATRIX</h2><button onclick="closePanel()">CLOSE</button></div>
-    <div id="calendar" class="panel"><h2>CALENDAR</h2><button onclick="closePanel()">CLOSE</button></div>
-    <div id="anime" class="panel"><h2>ANIME LOG</h2><button onclick="closePanel()">CLOSE</button></div>
-
-    <script>
-        function openPanel(id) {
-            document.getElementById('main-menu').style.transform = 'translateX(-50%)';
-            document.getElementById(id).style.display = 'block';
-            setTimeout(() => document.getElementById(id).classList.add('active'), 50);
-        }
-
-        function closePanel() {
-            document.querySelectorAll('.panel').forEach(p => {
-                p.classList.remove('active');
-                setTimeout(() => p.style.display = 'none', 500);
-            });
-            document.getElementById('main-menu').style.transform = 'translateX(0)';
-        }
-    </script>
+    <audio id="click-sound" src="click.mp3"></audio>
+    <script src="script.js"></script>
 </body>
 </html>
