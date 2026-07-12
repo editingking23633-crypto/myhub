@@ -3,59 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        /* Base Styles */
-        body { 
-            margin: 0; padding: 0; 
-            background: #000; 
-            color: #fff; 
-            font-family: 'Arial Black', sans-serif; 
-            overflow: hidden; 
-        }
-
-        /* Fullscreen Video - Ensure background.mp4 is in the same folder */
-        #bg-video { 
-            position: fixed; top: 0; left: 0;
-            width: 100vw; height: 100vh; 
-            object-fit: cover; z-index: -1; 
-        }
-
-        /* The Menu - Added gap for spacing */
-        .menu-container { 
-            position: absolute; left: 50px; top: 100px; 
-            display: flex; flex-direction: column; 
-            gap: 40px; /* This adds the space between buttons */
-        }
-
-        .menu-btn { 
-            background: none; border: none; color: white; 
-            font-size: 80px; font-weight: 900; 
-            text-transform: uppercase; text-align: left; 
-            cursor: pointer; 
-            transition: 0.3s;
-            text-shadow: 4px 4px 0px #ff003c;
-        }
-
-        .menu-btn:hover { 
-            color: #ff003c; transform: translateX(20px); 
-            text-shadow: 4px 4px 0px #fff; 
-        }
-
-        /* The Data Panel */
-        #panel { 
-            position: absolute; right: 50px; top: 100px; 
-            width: 400px; background: rgba(0,0,0,0.8); 
-            border: 2px solid #ff003c; padding: 30px;
-        }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Arial Black', sans-serif; overflow: hidden; }
         
-        input { background: #222; border: 1px solid #fff; color: white; padding: 10px; width: 80%; }
-        button { background: #ff003c; border: none; color: white; padding: 10px; cursor: pointer; }
+        /* Fullscreen Video container */
+        #bg-video { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; }
+
+        .menu-container { position: absolute; left: 50px; top: 100px; display: flex; flex-direction: column; gap: 30px; }
+        .menu-btn { background: none; border: none; color: white; font-size: 60px; font-weight: 900; text-transform: uppercase; text-align: left; cursor: pointer; transition: 0.3s; text-shadow: 4px 4px 0px #ff003c; }
+        .menu-btn:hover { color: #ff003c; transform: translateX(20px); text-shadow: 4px 4px 0px #fff; }
+
+        #panel { position: absolute; right: 50px; top: 100px; width: 400px; background: rgba(0,0,0,0.85); border: 2px solid #ff003c; padding: 20px; }
+        
+        /* Styling for the video uploader */
+        #video-upload-area { position: absolute; bottom: 20px; left: 50px; background: rgba(0,0,0,0.7); padding: 10px; border: 1px solid #ff003c; }
     </style>
 </head>
 <body>
 
-    <video autoplay muted loop id="bg-video">
-        <source src="background.mp4" type="video/mp4">
-    </video>
+    <!-- The Video Element -->
+    <video autoplay muted loop id="bg-video"></video>
+
+    <!-- Upload Button -->
+    <div id="video-upload-area">
+        <label for="videoFile" style="cursor:pointer; color:#ff003c;">[ SELECT VIDEO FROM PC ]</label>
+        <input type="file" id="videoFile" accept="video/*" style="display:none;">
+    </div>
 
     <div class="menu-container">
         <button class="menu-btn" onclick="updatePanel('savings')">Savings</button>
@@ -64,34 +36,31 @@
     </div>
 
     <div id="panel">
-        <h2 style="color: #ff003c;">SELECT SYSTEM</h2>
+        <h2 style="color: #ff003c;">SYSTEM READY</h2>
     </div>
 
     <script>
+        // Video Uploader Logic
+        const videoInput = document.getElementById('videoFile');
+        const videoPlayer = document.getElementById('bg-video');
+
+        videoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            const url = URL.createObjectURL(file);
+            videoPlayer.src = url;
+        });
+
+        // Previous Panel Logic
         function updatePanel(type) {
             const panel = document.getElementById('panel');
-            if(type === 'savings') {
-                panel.innerHTML = `
-                    <h2 style="color: #ff003c;">SAVINGS</h2>
-                    <p>Goal: $<span id="goal">0</span></p>
-                    <input type="number" id="gVal" placeholder="Set Goal">
-                    <button onclick="setG()">Set</button>
-                    <p>Balance: $<span id="bal">0</span></p>
-                    <input type="number" id="bVal" placeholder="Amount">
-                    <button onclick="addB()">Add</button> <button onclick="subB()">Sub</button>
-                `;
-            } else {
-                panel.innerHTML = `
-                    <h2 style="color: #ff003c;">${type.toUpperCase()}</h2>
-                    <input type="text" id="in" placeholder="Enter name...">
-                    <button onclick="addI()">Add</button>
-                    <ul id="list"></ul>
-                `;
-            }
+            panel.innerHTML = `
+                <h2 style="color: #ff003c;">${type.toUpperCase()}</h2>
+                <input type="text" id="in" placeholder="Enter details..." style="width:80%; padding:10px;">
+                <button onclick="addI()" style="background:#ff003c; color:white; border:none; padding:10px;">Add</button>
+                <ul id="list"></ul>
+            `;
         }
-        function setG() { document.getElementById('goal').innerText = document.getElementById('gVal').value; }
-        function addB() { document.getElementById('bal').innerText = parseInt(document.getElementById('bal').innerText) + parseInt(document.getElementById('bVal').value); }
-        function subB() { document.getElementById('bal').innerText = parseInt(document.getElementById('bal').innerText) - parseInt(document.getElementById('bVal').value); }
+
         function addI() { 
             let li = document.createElement('li');
             li.innerText = document.getElementById('in').value;
