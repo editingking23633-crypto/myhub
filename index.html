@@ -5,7 +5,6 @@
     <style>
         body { margin: 0; background: #000; color: #fff; font-family: 'Arial Black', sans-serif; overflow: hidden; }
         
-        /* Fullscreen Video container */
         #bg-video { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; }
 
         .menu-container { position: absolute; left: 50px; top: 100px; display: flex; flex-direction: column; gap: 30px; }
@@ -14,33 +13,38 @@
 
         #panel { position: absolute; right: 50px; top: 100px; width: 400px; background: rgba(0,0,0,0.85); border: 2px solid #ff003c; padding: 20px; }
         
-        /* Styling for the video uploader */
         #video-upload-area { position: absolute; bottom: 20px; left: 50px; background: rgba(0,0,0,0.7); padding: 10px; border: 1px solid #ff003c; }
     </style>
 </head>
 <body>
 
-    <!-- The Video Element -->
+    <audio id="click-sound" src="click.mp3"></audio>
+
     <video autoplay muted loop id="bg-video"></video>
 
-    <!-- Upload Button -->
     <div id="video-upload-area">
         <label for="videoFile" style="cursor:pointer; color:#ff003c;">[ SELECT VIDEO FROM PC ]</label>
         <input type="file" id="videoFile" accept="video/*" style="display:none;">
     </div>
 
     <div class="menu-container">
-        <button class="menu-btn" onclick="updatePanel('savings')">Savings</button>
-        <button class="menu-btn" onclick="updatePanel('anime')">Anime</button>
-        <button class="menu-btn" onclick="updatePanel('books')">Books</button>
+        <button class="menu-btn" onclick="playSound(); updatePanel('savings')">Savings</button>
+        <button class="menu-btn" onclick="playSound(); updatePanel('anime')">Anime</button>
+        <button class="menu-btn" onclick="playSound(); updatePanel('books')">Books</button>
     </div>
 
     <div id="panel">
-        <h2 style="color: #ff003c;">SYSTEM READY</h2>
-    </div>
+        </div>
 
     <script>
-        // Video Uploader Logic
+        // Audio Logic
+        function playSound() {
+            const audio = document.getElementById('click-sound');
+            audio.currentTime = 0; // Reset to start so it plays repeatedly
+            audio.play().catch(e => console.log("Audio play failed: ", e));
+        }
+
+        // Video Uploader
         const videoInput = document.getElementById('videoFile');
         const videoPlayer = document.getElementById('bg-video');
 
@@ -50,7 +54,7 @@
             videoPlayer.src = url;
         });
 
-        // Previous Panel Logic
+        // Panel Logic
         function updatePanel(type) {
             const panel = document.getElementById('panel');
             panel.innerHTML = `
