@@ -3,44 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        /* Force black background so it never looks white */
+        /* Base Styles */
         body { 
             margin: 0; padding: 0; 
             background: #000; 
-            color: white; 
+            color: #fff; 
             font-family: 'Arial Black', sans-serif; 
             overflow: hidden; 
         }
 
+        /* Fullscreen Video - Ensure background.mp4 is in the same folder */
         #bg-video { 
-            position: fixed; width: 100vw; height: 100vh; 
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh; 
             object-fit: cover; z-index: -1; 
         }
 
+        /* The Menu - Added gap for spacing */
         .menu-container { 
-            position: absolute; left: 50px; top: 150px; 
+            position: absolute; left: 50px; top: 100px; 
             display: flex; flex-direction: column; 
+            gap: 40px; /* This adds the space between buttons */
         }
 
         .menu-btn { 
             background: none; border: none; color: white; 
             font-size: 80px; font-weight: 900; 
             text-transform: uppercase; text-align: left; 
-            cursor: pointer; line-height: 0.7; 
-            transition: 0.2s;
+            cursor: pointer; 
+            transition: 0.3s;
             text-shadow: 4px 4px 0px #ff003c;
         }
 
         .menu-btn:hover { 
-            color: #ff003c; transform: translateX(30px); 
-            text-shadow: 4px 4px 0px white; 
+            color: #ff003c; transform: translateX(20px); 
+            text-shadow: 4px 4px 0px #fff; 
         }
 
+        /* The Data Panel */
         #panel { 
-            position: absolute; right: 50px; top: 150px; 
-            width: 400px; background: rgba(0,0,0,0.85); 
-            border-left: 5px solid #ff003c; padding: 30px;
+            position: absolute; right: 50px; top: 100px; 
+            width: 400px; background: rgba(0,0,0,0.8); 
+            border: 2px solid #ff003c; padding: 30px;
         }
+        
+        input { background: #222; border: 1px solid #fff; color: white; padding: 10px; width: 80%; }
+        button { background: #ff003c; border: none; color: white; padding: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -56,7 +64,7 @@
     </div>
 
     <div id="panel">
-        <h2 style="color: #ff003c;">SYSTEM READY</h2>
+        <h2 style="color: #ff003c;">SELECT SYSTEM</h2>
     </div>
 
     <script>
@@ -68,26 +76,23 @@
                     <p>Goal: $<span id="goal">0</span></p>
                     <input type="number" id="gVal" placeholder="Set Goal">
                     <button onclick="setG()">Set</button>
-                    <br><br>
                     <p>Balance: $<span id="bal">0</span></p>
                     <input type="number" id="bVal" placeholder="Amount">
-                    <button onclick="addB()">Add</button>
-                    <button onclick="subB()">Sub</button>
+                    <button onclick="addB()">Add</button> <button onclick="subB()">Sub</button>
                 `;
             } else {
                 panel.innerHTML = `
                     <h2 style="color: #ff003c;">${type.toUpperCase()}</h2>
                     <input type="text" id="in" placeholder="Enter name...">
-                    <button onclick="addI('${type}')">Add</button>
+                    <button onclick="addI()">Add</button>
                     <ul id="list"></ul>
                 `;
             }
         }
-
         function setG() { document.getElementById('goal').innerText = document.getElementById('gVal').value; }
         function addB() { document.getElementById('bal').innerText = parseInt(document.getElementById('bal').innerText) + parseInt(document.getElementById('bVal').value); }
         function subB() { document.getElementById('bal').innerText = parseInt(document.getElementById('bal').innerText) - parseInt(document.getElementById('bVal').value); }
-        function addI(t) { 
+        function addI() { 
             let li = document.createElement('li');
             li.innerText = document.getElementById('in').value;
             document.getElementById('list').appendChild(li);
