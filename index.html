@@ -1,28 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>My Dashboard</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: sans-serif; color: white; }
+        #bg-video { position: fixed; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; }
+        .overlay { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: rgba(0, 0, 0, 0.5); }
+        button { background: rgba(255, 255, 255, 0.2); border: 1px solid white; color: white; padding: 15px 30px; margin: 10px; cursor: pointer; transition: 0.3s; border-radius: 10px; font-size: 18px; }
+        button:hover { background: white; color: black; transform: scale(1.1); }
+        #display-area { margin-top: 20px; font-size: 20px; text-align: center; }
+    </style>
 </head>
 <body>
-    <!-- Full-screen Video Background -->
+
     <video autoplay muted loop id="bg-video">
-        <source src="your-video.mp4" type="video/mp4">
+        <source src="background.mp4" type="video/mp4">
     </video>
 
     <div class="overlay">
-        <h1>My Personal Dashboard</h1>
+        <h1>My Dashboard</h1>
         <nav>
-            <button onclick="playSound(); showSection('savings')">Savings</button>
-            <button onclick="playSound(); showSection('anime')">Anime</button>
-            <button onclick="playSound(); showSection('books')">Books</button>
+            <button onclick="updateDisplay('Savings Tracker: $0')">Savings</button>
+            <button onclick="updateDisplay('Anime Watched: None')">Anime</button>
+            <button onclick="updateDisplay('Books Read: None')">Books</button>
         </nav>
-
-        <div id="content-area">
-            <!-- Sections will appear here -->
-        </div>
+        <div id="display-area">Select an option</div>
     </div>
 
-    <audio id="click-sound" src="click.mp3"></audio>
-    <script src="script.js"></script>
+    <audio id="audio-click" src="click.mp3"></audio>
+
+    <script>
+        function updateDisplay(text) {
+            document.getElementById("audio-click").play();
+            document.getElementById("display-area").innerHTML = text;
+        }
+    </script>
 </body>
 </html>
